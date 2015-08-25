@@ -1,11 +1,15 @@
+#include <list>
+#include "AudioDevice.h"
+#include "DefSoundEndpointColl.h"
 
 // This class is exported from the AudioEndPointLibrary.dll
-class AUDIOENDPOINTLIBRARY_API CAudioEndPointLibrary {
-public:
-	CAudioEndPointLibrary(void);
-	// TODO: add your methods here.
-};
+namespace AudioEndPoint {
+	typedef std::unique_ptr<AudioDevice> AudioDevicePtr;
+	typedef std::list<AudioDevicePtr> AudioDeviceList;
+	typedef std::unique_ptr<AudioDeviceList> AudioDeviceListPtr;
 
-extern AUDIOENDPOINTLIBRARY_API int nAudioEndPointLibrary;
-
-AUDIOENDPOINTLIBRARY_API int fnAudioEndPointLibrary(void);
+	class AUDIOENDPOINTLIBRARY_API CAudioEndPointLibrary {
+		CAudioEndPointLibrary(void);
+		static AudioDeviceListPtr GetAudioDevice(DefSound::EDeviceState state);
+	};
+}

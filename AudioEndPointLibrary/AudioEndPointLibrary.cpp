@@ -5,18 +5,21 @@
 #include "AudioEndPointLibrary.h"
 
 
-// This is an example of an exported variable
-AUDIOENDPOINTLIBRARY_API int nAudioEndPointLibrary=0;
-
-// This is an example of an exported function.
-AUDIOENDPOINTLIBRARY_API int fnAudioEndPointLibrary(void)
-{
-    return 42;
-}
-
 // This is the constructor of a class that has been exported.
 // see AudioEndPointLibrary.h for the class definition
-CAudioEndPointLibrary::CAudioEndPointLibrary()
+AudioEndPoint::CAudioEndPointLibrary::CAudioEndPointLibrary()
 {
     return;
+}
+
+AudioEndPoint::AudioDeviceListPtr AudioEndPoint::CAudioEndPointLibrary::GetAudioDevice(DefSound::EDeviceState state)
+{
+	AudioDeviceListPtr list(new AudioDeviceList);
+	auto collection = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(state));
+	for(auto &endpoint : collection->Get())
+	{
+		list->push_back(std::make_unique<AudioDevice>(endpoint));
+	}
+
+	return list;
 }
