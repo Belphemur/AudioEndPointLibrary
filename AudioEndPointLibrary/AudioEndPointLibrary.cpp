@@ -12,7 +12,7 @@ AudioEndPoint::CAudioEndPointLibrary::CAudioEndPointLibrary()
     return;
 }
 
-AudioEndPoint::AudioDeviceListPtr AudioEndPoint::CAudioEndPointLibrary::GetAudioDevice(DefSound::EDeviceState state)
+AudioEndPoint::AudioDeviceListPtr AudioEndPoint::CAudioEndPointLibrary::GetAudioDevices(DefSound::EDeviceState state)
 {
 	AudioDeviceListPtr list(new AudioDeviceList);
 	auto collection = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(state));
