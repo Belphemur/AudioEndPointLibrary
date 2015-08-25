@@ -215,19 +215,6 @@ void SetDefaultEndpointOneRole(__in PCWSTR wszDeviceId, __in ::ERole Role)
 
 // ----------------------------------------------------------------------------
 
-void SetDefaultEndpoint(__in const CEndpoint &Endpoint, __in ::ERole Role)
-{
-    if (GetEndpointAllRoles().m_RoleValue != Role)
-    {
-        SetDefaultEndpointOneRole(Endpoint.m_DeviceId.c_str(), Role);
-        return;
-    }
-    for (const auto &itRole : GetEndpointRoleArray())
-        SetDefaultEndpointOneRole(Endpoint.m_DeviceId.c_str(), itRole.m_RoleValue);
-}
-
-// ----------------------------------------------------------------------------
-
 }   // namespace <nameless>
 
 // ----------------------------------------------------------------------------
@@ -278,7 +265,13 @@ void CEndpointCollection::SetDefault(__in size_t nIndex, ERole Role) const
 
 void CEndpointCollection::SetDefaultEndpoint(const CEndpoint& Endpoint, ::ERole Role)
 {
-	SetDefaultEndpoint(Endpoint, Role);
+	if (GetEndpointAllRoles().m_RoleValue != Role)
+	{
+		SetDefaultEndpointOneRole(Endpoint.m_DeviceId.c_str(), Role);
+		return;
+	}
+	for (const auto &itRole : GetEndpointRoleArray())
+		SetDefaultEndpointOneRole(Endpoint.m_DeviceId.c_str(), itRole.m_RoleValue);
 }
 
 	// ----------------------------------------------------------------------------
