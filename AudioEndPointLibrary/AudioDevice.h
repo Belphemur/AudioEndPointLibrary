@@ -1,4 +1,5 @@
 #pragma once
+#include "DefSoundEndpointColl.h"
 namespace AudioEndPoint {
 	class AUDIOENDPOINTLIBRARY_API AudioDevice
 	{
@@ -7,6 +8,7 @@ namespace AudioEndPoint {
 		LPWSTR description;
 		LPWSTR interfaceFriendlyName;
 		LPWSTR id;
+		DefSound::CEndpoint end_point_;
 
 	public:
 
