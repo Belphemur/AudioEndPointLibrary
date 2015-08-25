@@ -27,6 +27,24 @@
     <ClInclude Include="AudioEndPointLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ExportDll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioDevice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DefSoundEndpointColl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DefSoundEndpointRole.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DefSoundError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PolicyConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -36,6 +54,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioDevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DefSoundEndpointColl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DefSoundEndpointRole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DefSoundError.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

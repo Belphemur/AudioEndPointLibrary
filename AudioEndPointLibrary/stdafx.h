@@ -12,5 +12,21 @@
 #include <windows.h>
 
 
+#ifdef  _DEBUG
+#define VERIFY(x)   _ASSERT(x)
+#else   // _DEBUG
+#define VERIFY(x)   (x)
+#endif  // _DEBUG
 
-// TODO: reference additional headers your program requires here
+#include <string>
+#include <MmDeviceApi.h>
+#include <vector>
+#include <memory>
+
+#pragma comment(lib, "comsuppw.lib")
+#include <comip.h>
+#include <comutil.h>
+
+#include "DefSoundError.h"
+#include "ExportDll.h"
+
