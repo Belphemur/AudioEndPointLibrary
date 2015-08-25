@@ -1,16 +1,16 @@
+#include "stdafx.h"
 #include "AudioDevice.h"
 
 
-
-void AudioDevice::SetDefault()
+void AudioEndPoint::AudioDevice::SetDefault()
 {
 }
 
-AudioDevice::AudioDevice()
+AudioEndPoint::AudioDevice::AudioDevice()
 {
 }
 
 
-AudioDevice::~AudioDevice()
+AudioEndPoint::AudioDevice::~AudioDevice()
 {
 }
