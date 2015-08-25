@@ -110,13 +110,14 @@ private:
 
 void EnumerateEndpoints(
     __in const CDeviceEnumeratorPtr &pDeviceEnumerator,
+	__in int deviceState,
     __out CEndpointCollection::CImpl &EndpointCollectionImpl
 )
 {
     HRESULT Result;
 
     CDeviceCollectionPtr pDeviceCollection;
-    Result = pDeviceEnumerator->EnumAudioEndpoints(::eRender, DEVICE_STATE_ACTIVE, &pDeviceCollection);
+    Result = pDeviceEnumerator->EnumAudioEndpoints(::eRender, deviceState, &pDeviceCollection);
     if (S_OK != Result)
         throw CError( MakeDefaultErrorDescription(L"IMMDeviceEnumerator::EnumAudioEndpoints"), Result );
 
@@ -264,7 +265,7 @@ void CEndpointCollection::Refresh()
         throw CError( L"Create instance of MMDeviceEnumerator failed", Result );
 
     CEndpointCollection::CImpl Impl;
-    EnumerateEndpoints(pDeviceEnumerator, Impl);
+    EnumerateEndpoints(pDeviceEnumerator, deviceState, Impl);
 
     for (const auto &EndpointRole : GetEndpointRoleArray())
         MarkDefaultAudioEndpoint(pDeviceEnumerator, EndpointRole.m_RoleValue, Impl);

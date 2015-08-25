@@ -43,6 +43,16 @@ struct CEndpoint
     std::array< bool, ERole_enum_count > m_IsDefault;
 };
 
+enum DeviceState
+{
+	Active = DEVICE_STATE_ACTIVE,
+	Disabled = DEVICE_STATE_DISABLED,
+	NotPresent = DEVICE_STATE_NOTPRESENT,
+	Unplugged = DEVICE_STATE_UNPLUGGED,
+	All = DEVICE_STATEMASK_ALL
+	
+};
+
 // ----------------------------------------------------------------------------
 
 class CEndpointCollection
@@ -50,7 +60,14 @@ class CEndpointCollection
 public:
     CEndpointCollection();
 
-    void Refresh();
+
+	explicit CEndpointCollection(DeviceState device_state)
+		: deviceState{device_state}
+	{
+		CEndpointCollection();
+	}
+
+	void Refresh();
 
     typedef std::vector< CEndpoint > CImpl;
     const CImpl &Get() const;
@@ -65,6 +82,7 @@ public:
 
 private:
     std::unique_ptr< const CImpl >  m_pImpl;
+	DeviceState deviceState;
 };
 
 // ----------------------------------------------------------------------------
