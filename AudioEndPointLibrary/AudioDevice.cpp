@@ -5,6 +5,7 @@
 
 void AudioEndPoint::AudioDevice::SetDefault(ERole role)
 {
+	DefSound::CEndpointCollection::SetDefaultEndpoint(endpoint, role);
 }
 
 bool AudioEndPoint::AudioDevice::IsDefault(ERole role)

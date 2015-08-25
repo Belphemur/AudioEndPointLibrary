@@ -276,7 +276,12 @@ void CEndpointCollection::SetDefault(__in size_t nIndex, ERole Role) const
     SetDefaultEndpoint(m_pImpl->at(nIndex), Role);
 }
 
-// ----------------------------------------------------------------------------
+void CEndpointCollection::SetDefaultEndpoint(const CEndpoint& Endpoint, ::ERole Role)
+{
+	SetDefaultEndpoint(Endpoint, Role);
+}
+
+	// ----------------------------------------------------------------------------
 
 INT_PTR CEndpointCollection::SetDefaultNext(__in ERole Role) const
 {

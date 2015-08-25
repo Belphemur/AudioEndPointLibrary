@@ -44,7 +44,7 @@ struct CEndpoint
     std::array< bool, ERole_enum_count > m_IsDefault;
 };
 
-enum DeviceState
+enum EDeviceState
 {
 	Active = DEVICE_STATE_ACTIVE,
 	Disabled = DEVICE_STATE_DISABLED,
@@ -62,7 +62,7 @@ public:
     CEndpointCollection();
 
 
-	explicit CEndpointCollection(DeviceState device_state)
+	explicit CEndpointCollection(EDeviceState device_state)
 		: deviceState{device_state}
 	{
 		CEndpointCollection();
@@ -79,11 +79,12 @@ public:
     bool IsDefault(__in size_t nIndex, __in ERole Role) const;
 
     void SetDefault(__in size_t nIndex, __in ERole Role) const;
+	static void SetDefaultEndpoint(__in const CEndpoint &Endpoint, __in::ERole Role);
     INT_PTR SetDefaultNext(__in ERole Role) const;   // -1 == no next
 
 private:
     std::unique_ptr< const CImpl >  m_pImpl;
-	DeviceState deviceState;
+	EDeviceState deviceState;
 };
 
 // ----------------------------------------------------------------------------
