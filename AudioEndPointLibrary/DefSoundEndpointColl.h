@@ -59,14 +59,7 @@ enum EDeviceState
 class CEndpointCollection
 {
 public:
-    CEndpointCollection();
-
-
-	explicit CEndpointCollection(EDeviceState device_state)
-		: deviceState{device_state}
-	{
-		CEndpointCollection();
-	}
+	CEndpointCollection(EDeviceState device_state = All);
 
 	void Refresh();
 

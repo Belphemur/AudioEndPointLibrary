@@ -26,9 +26,9 @@ namespace AudioEndPoint {
 			return endpoint.m_DeviceId.c_str();
 		}
 
-		__declspec(property(get = GetFriendlyName)) LPWSTR FriendlyName;
-		__declspec(property(get = GetDescription)) LPWSTR Description;
-		__declspec(property(get = GetID)) LPWSTR ID;
+		__declspec(property(get = GetFriendlyName)) LPCWSTR FriendlyName;
+		__declspec(property(get = GetDescription)) LPCWSTR Description;
+		__declspec(property(get = GetID)) LPCWSTR ID;
 
 		
 		void SetDefault(ERole role);

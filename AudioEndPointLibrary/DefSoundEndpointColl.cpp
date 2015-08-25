@@ -88,16 +88,16 @@ void EnumerateEndpoints(
     __out CEndpointCollection::CImpl &EndpointCollectionImpl
 )
 {
-    HRESULT Result;
+    HRESULT Result = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
     CDeviceCollectionPtr pDeviceCollection;
     Result = pDeviceEnumerator->EnumAudioEndpoints(::eRender, deviceState, &pDeviceCollection);
-    if (S_OK != Result)
+    if (FAILED(Result))
         throw CError( MakeDefaultErrorDescription(L"IMMDeviceEnumerator::EnumAudioEndpoints"), Result );
 
     UINT nCount = 0;
     Result = pDeviceCollection->GetCount(&nCount);
-    if (S_OK != Result)
+    if (FAILED(Result))
         throw CError( MakeDefaultErrorDescription(L"IMMDeviceCollection::Count"), Result );
 
     EndpointCollectionImpl.resize(nCount);
@@ -105,37 +105,45 @@ void EnumerateEndpoints(
     {
         CDevicePtr pDevice;
         Result = pDeviceCollection->Item(i, &pDevice);
-        if (S_OK != Result)
+        if (FAILED(Result))
             throw CError( MakeDefaultErrorDescription(L"IMMDeviceCollection::Item"), Result );
 
         WCHAR *wszDeviceId = nullptr;
         Result = pDevice->GetId(&wszDeviceId);
-        if (S_OK != Result)
+        if (FAILED(Result))
             throw CError( MakeDefaultErrorDescription(L"IMMDevice::GetId"), Result );
         std::unique_ptr< WCHAR, decltype(&::CoTaskMemFree) > DeviceIdHolder(wszDeviceId, &::CoTaskMemFree);
 
         CPropertyStorePtr pPropertyStore;
         Result = pDevice->OpenPropertyStore(STGM_READ, &pPropertyStore);
-        if (S_OK != Result)
+        if (FAILED(Result))
             throw CError( MakeDefaultErrorDescription(L"IMMDevice::OpenPropertyStore"), Result );
 
         CPropVariant DeviceDesc;
         Result = pPropertyStore->GetValue(PKEY_Device_DeviceDesc, &DeviceDesc.Get());
-        if (S_OK != Result)
+        if (FAILED(Result))
             throw CError( MakeDefaultErrorDescription(L"IPropertyStore::GetValue", L"(PKEY_Device_DeviceDesc, ...)"), Result );
         if (DeviceDesc.Get().vt != VT_LPWSTR)
             throw CError( L"Unexpected type of value `PKEY_Device_DeviceDesc'", ERROR_SUCCESS );
 
 		CPropVariant FriendlyName;
-		Result = pPropertyStore->GetValue(PKEY_Device_FriendlyName, &FriendlyName.Get());
-		if (S_OK != Result)
-			throw CError(MakeDefaultErrorDescription(L"IPropertyStore::GetValue", L"(PKEY_Device_FriendlyName, ...)"), Result);
-		if (FriendlyName.Get().vt != VT_LPWSTR)
-			throw CError(L"Unexpected type of value `PKEY_Device_FriendlyName'", ERROR_SUCCESS);
+	    try
+	    {
+			Result = pPropertyStore->GetValue(PKEY_Device_FriendlyName, &FriendlyName.Get());
+			if (FAILED(Result))
+				throw CError(MakeDefaultErrorDescription(L"IPropertyStore::GetValue", L"(PKEY_Device_FriendlyName, ...)"), Result);
+			if (FriendlyName.Get().vt != VT_LPWSTR)
+				throw CError(L"Unexpected type of value `PKEY_Device_FriendlyName'", ERROR_SUCCESS);
+	    }
+	    catch (CError)
+	    {
+			FriendlyName.Get().pwszVal = reinterpret_cast<LPWSTR>("");
+	    }
+		
 
         CPropVariant DeviceClassIconPath;
         Result = pPropertyStore->GetValue(PKEY_DeviceClass_IconPath, &DeviceClassIconPath.Get());
-        if (S_OK != Result)
+        if (FAILED(Result))
             throw CError( MakeDefaultErrorDescription(L"IPropertyStore::GetValue", L"(PKEY_DeviceClass_IconPath, ...)"), Result );
         if (DeviceClassIconPath.Get().vt != VT_LPWSTR)
             throw CError( L"Unexpected type of value `PKEY_DeviceClass_IconPath'", ERROR_SUCCESS );
@@ -164,13 +172,13 @@ void MarkDefaultAudioEndpoint(
 
     CDevicePtr pDevice;
     Result = pDeviceEnumerator->GetDefaultAudioEndpoint(::eRender, Role, &pDevice);
-    if (S_OK != Result)
+    if (FAILED(Result))
         throw CError( MakeDefaultErrorDescription(L"IMMDeviceEnumerator::GetDefaultAudioEndpoint"), Result );
     _ASSERT(pDevice);
 
     WCHAR *wszDeviceId = nullptr;
     Result = pDevice->GetId(&wszDeviceId);
-    if (S_OK != Result)
+    if (FAILED(Result))
         throw CError( MakeDefaultErrorDescription(L"IMMDevice::GetId"), Result );
     std::unique_ptr< WCHAR, decltype(&::CoTaskMemFree) > DeviceIdHolder(wszDeviceId, &::CoTaskMemFree);
 
@@ -205,11 +213,11 @@ void SetDefaultEndpointOneRole(__in PCWSTR wszDeviceId, __in ::ERole Role)
 {
     CPolicyConfigPtr pPolicyConfig;
     HRESULT Result = pPolicyConfig.CreateInstance(__uuidof(CPolicyConfigVistaClient));
-    if (S_OK != Result)
+    if (FAILED(Result))
         throw CError( L"Create instance of CPolicyConfig failed", Result );
 
     Result = pPolicyConfig->SetDefaultEndpoint(wszDeviceId, Role);
-    if (S_OK != Result)
+    if (FAILED(Result))
         throw CError( MakeDefaultErrorDescription(L"IPolicyConfig::SetDefaultEndpoint"), Result );
 }
 
@@ -219,18 +227,20 @@ void SetDefaultEndpointOneRole(__in PCWSTR wszDeviceId, __in ::ERole Role)
 
 // ----------------------------------------------------------------------------
 
-CEndpointCollection::CEndpointCollection()
+CEndpointCollection::CEndpointCollection(EDeviceState device_state)
 {
-    Refresh();
+	deviceState = device_state;
+	Refresh();
 }
 
-// ----------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------
 
 void CEndpointCollection::Refresh()
 {
     CDeviceEnumeratorPtr pDeviceEnumerator;
-    HRESULT Result = pDeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator));
-    if (S_OK != Result)
+	HRESULT Result = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+	Result = pDeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator));
+    if (FAILED(Result))
         throw CError( L"Create instance of MMDeviceEnumerator failed", Result );
 
     CEndpointCollection::CImpl Impl;
