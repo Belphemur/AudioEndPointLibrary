@@ -32,6 +32,7 @@ THE SOFTWARE.
 #include "PolicyConfig.h"
 
 #include <Functiondiscoverykeys_devpkey.h>
+#include "DefSoundIsDefaultEndpoint.h"
 
 // ----------------------------------------------------------------------------
 
@@ -80,33 +81,6 @@ protected:
 private:
     PROPVARIANT m_Impl;
 };
-
-// ----------------------------------------------------------------------------
-
-class CIsDefaultEndpoint
-{
-public:
-    explicit CIsDefaultEndpoint(__in ::ERole Role)
-        : m_Role(Role)
-    {
-    }
-    bool operator()(const CEndpoint &Endpoint) const
-    {
-        if (GetEndpointAllRoles().m_RoleValue != m_Role)
-            return Endpoint.m_IsDefault[m_Role];
-
-        for (const auto &itRole : GetEndpointRoleArray())
-        {
-            if (!Endpoint.m_IsDefault[itRole.m_RoleValue])
-                return false;
-        }
-        return true;
-    }
-private:
-    ::ERole m_Role;
-};
-
-// ----------------------------------------------------------------------------
 
 void EnumerateEndpoints(
     __in const CDeviceEnumeratorPtr &pDeviceEnumerator,

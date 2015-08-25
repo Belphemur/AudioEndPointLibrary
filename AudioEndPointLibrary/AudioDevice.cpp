@@ -1,23 +1,17 @@
 #include "stdafx.h"
 #include "AudioDevice.h"
+#include "DefSoundIsDefaultEndpoint.h"
 
 
 void AudioEndPoint::AudioDevice::SetDefault(ERole role)
 {
-	for (SIZE_T i = 0; i < sizeof(isDefault); i++)
-	{
-		isDefault[i] = false;
-	}
-	isDefault[role] = true;
 }
 
-AudioEndPoint::AudioDevice::AudioDevice()
+bool AudioEndPoint::AudioDevice::IsDefault(ERole role)
 {
-	isDefault = new bool[::ERole_enum_count];
+	return DefSound::CIsDefaultEndpoint(role)(endpoint);
 }
-
 
 AudioEndPoint::AudioDevice::~AudioDevice()
 {
-	delete isDefault;
 }

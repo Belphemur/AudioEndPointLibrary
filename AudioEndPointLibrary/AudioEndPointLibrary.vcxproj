@@ -150,6 +150,7 @@
     <ClInclude Include="DefSoundEndpointColl.h" />
     <ClInclude Include="DefSoundEndpointRole.h" />
     <ClInclude Include="DefSoundError.h" />
+    <ClInclude Include="DefSoundIsDefaultEndpoint.h" />
     <ClInclude Include="ExportDll.h" />
     <ClInclude Include="PolicyConfig.h" />
     <ClInclude Include="stdafx.h" />
@@ -161,6 +162,7 @@
     <ClCompile Include="DefSoundEndpointColl.cpp" />
     <ClCompile Include="DefSoundEndpointRole.cpp" />
     <ClCompile Include="DefSoundError.cpp" />
+    <ClCompile Include="DefSoundIsDefaultEndpoint.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

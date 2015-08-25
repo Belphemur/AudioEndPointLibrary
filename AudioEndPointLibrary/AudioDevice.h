@@ -3,18 +3,36 @@
 namespace AudioEndPoint {
 	class AUDIOENDPOINTLIBRARY_API AudioDevice
 	{
-		LPWSTR friendlyName;
-		bool* isDefault;
-		LPWSTR description;
-		LPWSTR interfaceFriendlyName;
-		LPWSTR id;
-		DefSound::CEndpoint end_point_;
+		DefSound::CEndpoint endpoint;
 
 	public:
+		explicit AudioDevice(const DefSound::CEndpoint endpoint)			
+		{
+			this->endpoint = endpoint;
+		}
 
+		inline LPCWSTR GetFriendlyName()
+		{
+			return endpoint.m_FriendlyName.c_str();
+		}
 
+		inline LPCWSTR GetDescription()
+		{
+			return endpoint.m_DeviceDesc.c_str();
+		}
+
+		inline LPCWSTR GetID()
+		{
+			return endpoint.m_DeviceId.c_str();
+		}
+
+		__declspec(property(get = GetFriendlyName)) LPWSTR FriendlyName;
+		__declspec(property(get = GetDescription)) LPWSTR Description;
+		__declspec(property(get = GetID)) LPWSTR ID;
+
+		
 		void SetDefault(ERole role);
-		AudioDevice();
+		bool IsDefault(ERole role);
 		~AudioDevice();
 	};
 }
