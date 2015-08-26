@@ -1,15 +1,29 @@
 #include "stdafx.h"
 #include "AudioDeviceWrapper.h"
+#include "DefSoundException.h"
 
 using namespace System;
 
 
 void AudioEndPointControllerWrapper::AudioDeviceWrapper::SetAsDefault(Role role)
 {
-	(_audioDevice.get())->get()->SetDefault(static_cast<::ERole>(role));
+	try 
+	{
+		(_audioDevice.get())->get()->SetDefault(static_cast<::ERole>(role));
+	} catch(DefSound::CError error)
+	{
+		throw gcnew DefSoundException(error);
+	}
 }
 
 bool AudioEndPointControllerWrapper::AudioDeviceWrapper::IsDefault(Role role)
 {
-	return (_audioDevice.get())->get()->IsDefault(static_cast<::ERole>(role));
+	try
+	{
+		return (_audioDevice.get())->get()->IsDefault(static_cast<::ERole>(role));
+	}
+	catch (DefSound::CError error)
+	{
+		throw gcnew DefSoundException(error);
+	}
 }
