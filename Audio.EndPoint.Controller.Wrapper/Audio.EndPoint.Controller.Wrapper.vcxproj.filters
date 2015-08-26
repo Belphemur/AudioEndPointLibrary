@@ -27,6 +27,9 @@
     <ClInclude Include="AudioDeviceWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DefSoundException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Audio.EndPoint.Controller.Wrapper.cpp">
@@ -39,6 +42,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AudioDeviceWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DefSoundException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

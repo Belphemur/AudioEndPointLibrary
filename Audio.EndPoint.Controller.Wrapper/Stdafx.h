@@ -27,5 +27,6 @@
 #include "ExportDll.h"
 
 #include "AudioDevice.h"
+#include "DefSoundError.h"
 #include <list>
 

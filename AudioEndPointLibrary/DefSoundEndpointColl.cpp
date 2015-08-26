@@ -137,7 +137,7 @@ void EnumerateEndpoints(
 	    }
 	    catch (CError)
 	    {
-			FriendlyName.Get().pwszVal = reinterpret_cast<LPWSTR>("");
+			FriendlyName.Get().pwszVal = L"";
 	    }
 		
 

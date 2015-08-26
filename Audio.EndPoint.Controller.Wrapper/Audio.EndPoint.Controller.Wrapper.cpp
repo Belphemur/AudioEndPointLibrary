@@ -4,6 +4,7 @@
 
 #include "Audio.EndPoint.Controller.Wrapper.h"
 #include "AudioEndPointLibrary.h"
+#include "DefSoundException.h"
 
 using namespace System;
 using namespace AudioEndPointControllerWrapper;
@@ -22,13 +23,19 @@ List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::getA
 
 List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::getAudioDevices(DeviceState state)
 {
-	AudioDeviceListPtr audioDeviceList = CAudioEndPointLibrary::GetAudioDevices((DefSound::EDeviceState)state);
-
-	List<AudioDeviceWrapper^>^ list = gcnew List<AudioDeviceWrapper^>();
-	for (AudioDeviceList::iterator i = audioDeviceList->begin(); i != audioDeviceList->end(); i++)
+	try 
 	{
-		AudioDeviceWrapper^ wrapper = gcnew AudioDeviceWrapper((*i).get());
-		list->Add(wrapper);
+		AudioDeviceListPtr audioDeviceList = CAudioEndPointLibrary::GetAudioDevices((DefSound::EDeviceState)state);
+
+		List<AudioDeviceWrapper^>^ list = gcnew List<AudioDeviceWrapper^>();
+		for (AudioDeviceList::iterator i = audioDeviceList->begin(); i != audioDeviceList->end(); i++)
+		{
+			AudioDeviceWrapper^ wrapper = gcnew AudioDeviceWrapper((*i).get());
+			list->Add(wrapper);
+		}
+		return list;
+	} catch(DefSound::CError error)
+	{
+		throw gcnew DefSoundException(error);
 	}
-	return list;
 }
