@@ -4,7 +4,7 @@
 
 // This class is exported from the AudioEndPointLibrary.dll
 namespace AudioEndPoint {
-	typedef std::unique_ptr<AudioDevice> AudioDevicePtr;
+	typedef std::shared_ptr<AudioDevice> AudioDevicePtr;
 	typedef std::list<AudioDevicePtr> AudioDeviceList;
 	typedef std::unique_ptr<AudioDeviceList> AudioDeviceListPtr;
 

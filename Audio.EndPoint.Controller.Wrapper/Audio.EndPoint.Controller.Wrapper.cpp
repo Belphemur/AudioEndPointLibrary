@@ -30,7 +30,7 @@ List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::getA
 		List<AudioDeviceWrapper^>^ list = gcnew List<AudioDeviceWrapper^>();
 		for (AudioDeviceList::iterator i = audioDeviceList->begin(); i != audioDeviceList->end(); i++)
 		{
-			AudioDeviceWrapper^ wrapper = gcnew AudioDeviceWrapper((*i).get());
+			AudioDeviceWrapper^ wrapper = gcnew AudioDeviceWrapper(std::move(*i));
 			list->Add(wrapper);
 		}
 		return list;

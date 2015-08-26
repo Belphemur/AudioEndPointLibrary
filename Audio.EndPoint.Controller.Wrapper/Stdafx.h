@@ -28,5 +28,6 @@
 
 #include "AudioDevice.h"
 #include "DefSoundError.h"
+#include "scoped_ptr.h"
 #include <list>
 

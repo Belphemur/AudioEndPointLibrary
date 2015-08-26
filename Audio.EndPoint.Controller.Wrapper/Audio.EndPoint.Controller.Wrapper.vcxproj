@@ -144,6 +144,7 @@
     <ClInclude Include="AudioDeviceWrapper.h" />
     <ClInclude Include="DefSoundException.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="scoped_ptr.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>

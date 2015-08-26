@@ -30,6 +30,9 @@
     <ClInclude Include="DefSoundException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="scoped_ptr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Audio.EndPoint.Controller.Wrapper.cpp">
