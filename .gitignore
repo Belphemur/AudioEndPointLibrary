@@ -26,3 +26,9 @@
 *.exe
 *.out
 *.app
+
+#VS
+Debug
+x64
+ipch
+*.*sdf
