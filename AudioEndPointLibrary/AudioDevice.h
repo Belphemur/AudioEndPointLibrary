@@ -26,9 +26,15 @@ namespace AudioEndPoint {
 			return endpoint.m_DeviceId.c_str();
 		}
 
+		inline LPCWSTR GetDeviceClassIconPath()
+		{
+			return endpoint.m_DeviceClassIconPath.c_str();
+		}
+
 		__declspec(property(get = GetFriendlyName)) LPCWSTR FriendlyName;
 		__declspec(property(get = GetDescription)) LPCWSTR Description;
 		__declspec(property(get = GetID)) LPCWSTR ID;
+		__declspec(property(get = GetDeviceClassIconPath)) LPCWSTR DeviceClassIconPath;
 
 		
 		void SetDefault(ERole role);

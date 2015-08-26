@@ -40,6 +40,14 @@ namespace AudioEndPointControllerWrapper {
 			}
 		}
 
+		property String^ DeviceClassIconPath {
+			String^ get()
+			{
+				return gcnew String(_audioDevice->DeviceClassIconPath);
+			}
+		}
+
+
 		virtual String^ ToString() override
 		{
 			return FriendlyName;
