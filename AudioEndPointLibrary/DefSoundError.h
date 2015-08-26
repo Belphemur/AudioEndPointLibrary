@@ -42,6 +42,11 @@ public:
     DWORD m_nErrorCode;
 };
 
+struct CNotActiveError : CError
+{
+	CNotActiveError(const std::wstring& Description, DWORD nErrorCode = ::GetLastError());
+};
+
 // ----------------------------------------------------------------------------
 
 std::wstring MakeDefaultErrorDescription(

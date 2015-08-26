@@ -108,6 +108,11 @@ void EnumerateEndpoints(
         if (FAILED(Result))
             throw CError( MakeDefaultErrorDescription(L"IMMDeviceCollection::Item"), Result );
 
+		DWORD dwState;
+		Result = pDevice->GetState(&dwState);
+		if (FAILED(Result))
+			throw CError(MakeDefaultErrorDescription(L"IMMDevice::GetState"), Result);
+
         WCHAR *wszDeviceId = nullptr;
         Result = pDevice->GetId(&wszDeviceId);
         if (FAILED(Result))
@@ -138,8 +143,7 @@ void EnumerateEndpoints(
 	    catch (CError)
 	    {
 			FriendlyName.Get().pwszVal = L"";
-	    }
-		
+	    }	
 
         CPropVariant DeviceClassIconPath;
         Result = pPropertyStore->GetValue(PKEY_DeviceClass_IconPath, &DeviceClassIconPath.Get());
@@ -148,12 +152,14 @@ void EnumerateEndpoints(
         if (DeviceClassIconPath.Get().vt != VT_LPWSTR)
             throw CError( L"Unexpected type of value `PKEY_DeviceClass_IconPath'", ERROR_SUCCESS );
 
+
         CEndpoint &Endpoint = EndpointCollectionImpl.at(i);
 
         Endpoint.m_DeviceId = wszDeviceId;
         Endpoint.m_DeviceDesc = DeviceDesc.Get().pwszVal;
 		Endpoint.m_FriendlyName = FriendlyName.Get().pwszVal;
         Endpoint.m_DeviceClassIconPath = DeviceClassIconPath.Get().pwszVal;
+		Endpoint.m_State.state = static_cast<EDeviceState>(dwState);
 
         for (auto &IsDefault : Endpoint.m_IsDefault)
             IsDefault = false;
@@ -275,6 +281,9 @@ void CEndpointCollection::SetDefault(__in size_t nIndex, ERole Role) const
 
 void CEndpointCollection::SetDefaultEndpoint(const CEndpoint& Endpoint, ::ERole Role)
 {
+	if(Endpoint.m_State.state != Active)
+		throw CNotActiveError(L"Device is not in active state", Endpoint.m_State.state);
+	
 	if (GetEndpointAllRoles().m_RoleValue != Role)
 	{
 		SetDefaultEndpointOneRole(Endpoint.m_DeviceId.c_str(), Role);

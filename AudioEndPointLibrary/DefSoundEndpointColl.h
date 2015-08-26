@@ -35,14 +35,7 @@ namespace DefSound {
 
 // ----------------------------------------------------------------------------
 
-struct CEndpoint
-{
-    std::wstring m_DeviceId;
-    std::wstring m_DeviceDesc;
-    std::wstring m_DeviceClassIconPath;
-	std::wstring m_FriendlyName;
-    std::array< bool, ERole_enum_count > m_IsDefault;
-};
+
 
 enum EDeviceState
 {
@@ -53,6 +46,22 @@ enum EDeviceState
 	All = DEVICE_STATEMASK_ALL
 	
 };
+
+struct CDeviceStateContainer
+{
+	EDeviceState state = All;
+};
+
+struct CEndpoint
+{
+	std::wstring m_DeviceId;
+	std::wstring m_DeviceDesc;
+	std::wstring m_DeviceClassIconPath;
+	std::wstring m_FriendlyName;
+	CDeviceStateContainer m_State;
+	std::array< bool, ERole_enum_count > m_IsDefault;
+};
+
 
 // ----------------------------------------------------------------------------
 

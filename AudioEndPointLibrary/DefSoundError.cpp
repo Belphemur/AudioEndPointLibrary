@@ -55,6 +55,9 @@ std::wstring MakeDefaultErrorDescription(
 
 // ----------------------------------------------------------------------------
 
+CNotActiveError::CNotActiveError(const std::wstring& Description, DWORD nErrorCode): CError{Description, nErrorCode}
+{
+}
 }   // namespace DefSound
 
 // ----------------------------------------------------------------------------

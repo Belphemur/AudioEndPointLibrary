@@ -10,7 +10,12 @@ void AudioEndPointControllerWrapper::AudioDeviceWrapper::SetAsDefault(Role role)
 	try 
 	{
 		(_audioDevice.get())->get()->SetDefault(static_cast<::ERole>(role));
-	} catch(DefSound::CError error)
+	}
+	catch (DefSound::CNotActiveError error)
+	{
+		throw gcnew DefSoundNotActiveException(error);
+	}
+	catch(DefSound::CError error)
 	{
 		throw gcnew DefSoundException(error);
 	}
@@ -21,6 +26,10 @@ bool AudioEndPointControllerWrapper::AudioDeviceWrapper::IsDefault(Role role)
 	try
 	{
 		return (_audioDevice.get())->get()->IsDefault(static_cast<::ERole>(role));
+	}
+	catch (DefSound::CNotActiveError error)
+	{
+		throw gcnew DefSoundNotActiveException(error);
 	}
 	catch (DefSound::CError error)
 	{

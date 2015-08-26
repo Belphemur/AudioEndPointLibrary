@@ -6,11 +6,13 @@ namespace AudioEndPoint {
 	{
 	public:
 		DefSoundException(DefSound::CError error);
-		String^ InnerMessage;
-		virtual String^ ToString() override
-		{
-			return gcnew String("InnerMessage: "+ InnerMessage + " \n" + __super::ToString() );
-		}
+	};
+
+	public ref class DefSoundNotActiveException :
+		public DefSoundException
+	{
+	public:
+		DefSoundNotActiveException(DefSound::CNotActiveError error);
 	};
 }
 
