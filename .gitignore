@@ -29,6 +29,7 @@
 
 #VS
 Debug
+Release
 x64
 ipch
 *.*sdf
