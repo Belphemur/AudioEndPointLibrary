@@ -9,7 +9,7 @@ void AudioEndPointControllerWrapper::AudioDeviceWrapper::SetAsDefault(Role role)
 {
 	try 
 	{
-		(_audioDevice.get())->get()->SetDefault(static_cast<::ERole>(role));
+		_audioDevice->SetDefault(static_cast<::ERole>(role));
 	}
 	catch (DefSound::CNotActiveError error)
 	{
@@ -25,7 +25,7 @@ bool AudioEndPointControllerWrapper::AudioDeviceWrapper::IsDefault(Role role)
 {
 	try
 	{
-		return (_audioDevice.get())->get()->IsDefault(static_cast<::ERole>(role));
+		return _audioDevice->IsDefault(static_cast<::ERole>(role));
 	}
 	catch (DefSound::CNotActiveError error)
 	{

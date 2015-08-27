@@ -14,36 +14,39 @@ namespace AudioEndPointControllerWrapper {
 	public ref class AudioDeviceWrapper
 	{
 	private:
-		clr_scoped_ptr<std::unique_ptr<AudioDevice>> _audioDevice;
+		AudioDevice* _audioDevice;
 	public:
-		AudioDeviceWrapper(std::unique_ptr<AudioDevice>& device) : _audioDevice(std::move(device)) {}
+		AudioDeviceWrapper(std::unique_ptr<AudioDevice>& device)
+		{
+			_audioDevice = device.release();
+		}
 		~AudioDeviceWrapper() { this->!AudioDeviceWrapper(); }
 		!AudioDeviceWrapper() { delete _audioDevice; }
 		property String^ FriendlyName {
 			String^ get()
 			{
-				return gcnew String((_audioDevice.get())->get()->FriendlyName);
+				return gcnew String(_audioDevice->FriendlyName);
 			}
 		}
 
 		property String^ Description {
 			String^ get()
 			{
-				return gcnew String((_audioDevice.get())->get()->Description);
+				return gcnew String(_audioDevice->Description);
 			}
 		}
 
 		property String^ Id {
 			String^ get()
 			{
-				return gcnew String((_audioDevice.get())->get()->ID);
+				return gcnew String(_audioDevice->ID);
 			}
 		}
 
 		property String^ DeviceClassIconPath {
 			String^ get()
 			{
-				return gcnew String((_audioDevice.get())->get()->DeviceClassIconPath);
+				return gcnew String(_audioDevice->DeviceClassIconPath);
 			}
 		}
 
