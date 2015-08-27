@@ -14,9 +14,9 @@ namespace AudioEndPointControllerWrapper {
 	public ref class AudioDeviceWrapper
 	{
 	private:
-		clr_scoped_ptr<std::shared_ptr<AudioDevice>> _audioDevice;
+		clr_scoped_ptr<std::unique_ptr<AudioDevice>> _audioDevice;
 	public:
-		AudioDeviceWrapper(std::shared_ptr<AudioDevice>& device) : _audioDevice(new std::shared_ptr<AudioDevice>(device)) {}
+		AudioDeviceWrapper(std::unique_ptr<AudioDevice>& device) : _audioDevice(std::move(device)) {}
 		~AudioDeviceWrapper() { this->!AudioDeviceWrapper(); }
 		!AudioDeviceWrapper() { delete _audioDevice; }
 		property String^ FriendlyName {

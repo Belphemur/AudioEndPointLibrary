@@ -18,7 +18,7 @@ AudioEndPoint::AudioDeviceListPtr AudioEndPoint::CAudioEndPointLibrary::GetAudio
 	auto collection = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(state));
 	for(auto &endpoint : collection->Get())
 	{
-		list->push_back(std::make_shared<AudioDevice>(endpoint));
+		list->push_back(std::make_unique<AudioDevice>(endpoint));
 	}
 
 	return list;

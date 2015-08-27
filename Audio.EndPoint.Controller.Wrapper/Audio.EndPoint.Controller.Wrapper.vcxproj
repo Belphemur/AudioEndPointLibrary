@@ -163,7 +163,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="app.rc" />
     <ResourceCompile Include="Audio.EndPoint.Controller.Wrapper.rc" />
   </ItemGroup>
   <ItemGroup>

@@ -55,9 +55,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="app.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
     <ResourceCompile Include="Audio.EndPoint.Controller.Wrapper.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
