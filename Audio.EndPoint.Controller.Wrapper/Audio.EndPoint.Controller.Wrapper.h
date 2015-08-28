@@ -27,9 +27,13 @@ namespace AudioEndPointControllerWrapper {
 	public ref class AudioController
 	{
 	public:
-		static List<AudioDeviceWrapper^>^ getAvailableAudioDevices();
-		static List<AudioDeviceWrapper^>^ getAllAudioDevices();
-		static  List<AudioDeviceWrapper^>^ getAudioDevices(DeviceState state);
+		static List<AudioDeviceWrapper^>^ GetActivePlaybackDevices();
+		static List<AudioDeviceWrapper^>^ GetAllPlaybackDevices();
+		static  List<AudioDeviceWrapper^>^ GetPlaybackDevices(DeviceState state);
+		static  List<AudioDeviceWrapper^>^ GetRecordingDevices(DeviceState state);
+		static List<AudioDeviceWrapper^>^ GetActiveRecordingDevices();
+		static List<AudioDeviceWrapper^>^ GetAllRecordingDevices();
+
 	};
 
 }

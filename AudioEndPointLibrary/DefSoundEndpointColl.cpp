@@ -85,13 +85,14 @@ private:
 void EnumerateEndpoints(
     __in const CDeviceEnumeratorPtr &pDeviceEnumerator,
 	__in EDeviceState deviceState,
+	__in EDataFlow deviceFlow,
     __out CEndpointCollection::CImpl &EndpointCollectionImpl
 )
 {
     HRESULT Result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
     CDeviceCollectionPtr pDeviceCollection;
-    Result = pDeviceEnumerator->EnumAudioEndpoints(::eRender, deviceState, &pDeviceCollection);
+    Result = pDeviceEnumerator->EnumAudioEndpoints(deviceFlow, deviceState, &pDeviceCollection);
     if (FAILED(Result))
         throw CError( MakeDefaultErrorDescription(L"IMMDeviceEnumerator::EnumAudioEndpoints"), Result );
 
@@ -171,13 +172,14 @@ void EnumerateEndpoints(
 void MarkDefaultAudioEndpoint(
     __in const CDeviceEnumeratorPtr &pDeviceEnumerator,
     __in ::ERole Role,
+	__in EDataFlow deviceFlow,
     __inout CEndpointCollection::CImpl &EndpointCollectionImpl
 )
 {
     HRESULT Result;
 
     CDevicePtr pDevice;
-    Result = pDeviceEnumerator->GetDefaultAudioEndpoint(::eRender, Role, &pDevice);
+    Result = pDeviceEnumerator->GetDefaultAudioEndpoint(deviceFlow, Role, &pDevice);
     if (FAILED(Result))
         throw CError( MakeDefaultErrorDescription(L"IMMDeviceEnumerator::GetDefaultAudioEndpoint"), Result );
     _ASSERT(pDevice);
@@ -233,9 +235,10 @@ void SetDefaultEndpointOneRole(__in PCWSTR wszDeviceId, __in ::ERole Role)
 
 // ----------------------------------------------------------------------------
 
-CEndpointCollection::CEndpointCollection(EDeviceState device_state)
+CEndpointCollection::CEndpointCollection(EDeviceState device_state, EDataFlow device_flow)
 {
-	deviceState = device_state;
+	m_device_state = device_state;
+	m_device_type = device_flow;
 	Refresh();
 }
 
@@ -244,16 +247,16 @@ CEndpointCollection::CEndpointCollection(EDeviceState device_state)
 void CEndpointCollection::Refresh()
 {
     CDeviceEnumeratorPtr pDeviceEnumerator;
-	HRESULT Result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+	HRESULT Result = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 	Result = pDeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator));
     if (FAILED(Result))
         throw CError( L"Create instance of MMDeviceEnumerator failed", Result );
 
     CEndpointCollection::CImpl Impl;
-    EnumerateEndpoints(pDeviceEnumerator, deviceState, Impl);
+    EnumerateEndpoints(pDeviceEnumerator, m_device_state, m_device_type, Impl);
 
     for (const auto &EndpointRole : GetEndpointRoleArray())
-        MarkDefaultAudioEndpoint(pDeviceEnumerator, EndpointRole.m_RoleValue, Impl);
+        MarkDefaultAudioEndpoint(pDeviceEnumerator, EndpointRole.m_RoleValue, m_device_type, Impl);
 
     m_pImpl.reset( new CEndpointCollection::CImpl(std::move(Impl)) );
 }

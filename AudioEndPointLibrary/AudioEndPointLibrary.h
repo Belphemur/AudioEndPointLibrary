@@ -11,6 +11,7 @@ namespace AudioEndPoint {
 	class AUDIOENDPOINTLIBRARY_API CAudioEndPointLibrary {
 		CAudioEndPointLibrary(void);
 	public:
-		static AudioDeviceListPtr GetAudioDevices(DefSound::EDeviceState state);
+		static AudioDeviceListPtr GetPlaybackDevices(DefSound::EDeviceState state);
+		static AudioDeviceListPtr GetRecordingDevices(DefSound::EDeviceState state);
 	};
 }

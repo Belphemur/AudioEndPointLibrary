@@ -68,7 +68,7 @@ struct CEndpoint
 class CEndpointCollection
 {
 public:
-	CEndpointCollection(EDeviceState device_state = All);
+	CEndpointCollection(EDeviceState device_state = All, EDataFlow device_flow = ::eRender);
 
 	void Refresh();
 
@@ -86,7 +86,8 @@ public:
 
 private:
     std::unique_ptr< const CImpl >  m_pImpl;
-	EDeviceState deviceState;
+	EDeviceState m_device_state;
+	EDataFlow m_device_type;
 };
 
 // ----------------------------------------------------------------------------
