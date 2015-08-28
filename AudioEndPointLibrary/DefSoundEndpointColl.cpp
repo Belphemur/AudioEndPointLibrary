@@ -84,11 +84,11 @@ private:
 
 void EnumerateEndpoints(
     __in const CDeviceEnumeratorPtr &pDeviceEnumerator,
-	__in int deviceState,
+	__in EDeviceState deviceState,
     __out CEndpointCollection::CImpl &EndpointCollectionImpl
 )
 {
-    HRESULT Result = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+    HRESULT Result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
     CDeviceCollectionPtr pDeviceCollection;
     Result = pDeviceEnumerator->EnumAudioEndpoints(::eRender, deviceState, &pDeviceCollection);
@@ -244,7 +244,7 @@ CEndpointCollection::CEndpointCollection(EDeviceState device_state)
 void CEndpointCollection::Refresh()
 {
     CDeviceEnumeratorPtr pDeviceEnumerator;
-	HRESULT Result = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+	HRESULT Result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 	Result = pDeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator));
     if (FAILED(Result))
         throw CError( L"Create instance of MMDeviceEnumerator failed", Result );
