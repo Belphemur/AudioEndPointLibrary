@@ -143,7 +143,8 @@
     <ClInclude Include="Audio.EndPoint.Controller.Wrapper.h" />
     <ClInclude Include="AudioDeviceWrapper.h" />
     <ClInclude Include="DefSoundException.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="DeviceState.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="scoped_ptr.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
@@ -163,15 +164,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Audio.EndPoint.Controller.Wrapper.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="app.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AudioEndPointLibrary\AudioEndPointLibrary.vcxproj">
       <Project>{521ed36d-a11a-4033-bf96-3c066fe74032}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Audio.EndPoint.Controller.Wrapper.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

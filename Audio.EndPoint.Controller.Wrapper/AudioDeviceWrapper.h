@@ -1,5 +1,7 @@
 #pragma once
 
+#include "DeviceState.h"
+
 using namespace System;
 using namespace AudioEndPoint;
 namespace AudioEndPointControllerWrapper {
@@ -47,6 +49,13 @@ namespace AudioEndPointControllerWrapper {
 			String^ get()
 			{
 				return gcnew String(_audioDevice->DeviceClassIconPath);
+			}
+		}
+
+		property AudioEndPoint::DeviceState DeviceState {
+			AudioEndPoint::DeviceState get()
+			{
+				return static_cast<AudioEndPoint::DeviceState>(_audioDevice->DeviceState);
 			}
 		}
 
