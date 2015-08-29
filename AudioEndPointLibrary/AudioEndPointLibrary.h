@@ -1,6 +1,6 @@
-#include <list>
 #include "AudioDevice.h"
-#include "DefSoundEndpointColl.h"
+#include <list>
+#include "DefSoundDeviceState.h"
 
 // This class is exported from the AudioEndPointLibrary.dll
 namespace AudioEndPoint {

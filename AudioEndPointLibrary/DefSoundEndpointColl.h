@@ -26,44 +26,14 @@ THE SOFTWARE.
 // ----------------------------------------------------------------------------
 
 #pragma once
-#include <array>
+#include "DefSoundDeviceState.h"
+#include "DefSoundEndpoint.h"
 
 
 // ----------------------------------------------------------------------------
 
 namespace DefSound {
 
-// ----------------------------------------------------------------------------
-
-
-
-enum EDeviceState
-{
-	Active = DEVICE_STATE_ACTIVE,
-	Disabled = DEVICE_STATE_DISABLED,
-	NotPresent = DEVICE_STATE_NOTPRESENT,
-	Unplugged = DEVICE_STATE_UNPLUGGED,
-	All = DEVICE_STATEMASK_ALL
-	
-};
-
-struct CDeviceStateContainer
-{
-	EDeviceState state = All;
-};
-
-struct CEndpoint
-{
-	std::wstring m_DeviceId;
-	std::wstring m_DeviceDesc;
-	std::wstring m_DeviceClassIconPath;
-	std::wstring m_FriendlyName;
-	CDeviceStateContainer m_State;
-	std::array< bool, ERole_enum_count > m_IsDefault;
-};
-
-
-// ----------------------------------------------------------------------------
 
 class CEndpointCollection
 {

@@ -147,6 +147,8 @@
   <ItemGroup>
     <ClInclude Include="AudioDevice.h" />
     <ClInclude Include="AudioEndPointLibrary.h" />
+    <ClInclude Include="DefSoundDeviceState.h" />
+    <ClInclude Include="DefSoundEndpoint.h" />
     <ClInclude Include="DefSoundEndpointColl.h" />
     <ClInclude Include="DefSoundEndpointRole.h" />
     <ClInclude Include="DefSoundError.h" />

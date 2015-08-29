@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "AudioEndPointLibrary.h"
+#include "DefSoundEndpointColl.h"
 
 
 // This is the constructor of a class that has been exported.

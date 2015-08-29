@@ -1,5 +1,5 @@
 #pragma once
-#include "DefSoundEndpointColl.h"
+#include "DefSoundEndpoint.h"
 namespace AudioEndPoint {
 	class AUDIOENDPOINTLIBRARY_API AudioDevice
 	{
@@ -31,10 +31,16 @@ namespace AudioEndPoint {
 			return endpoint.m_DeviceClassIconPath.c_str();
 		}
 
+		inline DefSound::EDeviceState GetDeviceState()
+		{
+			return endpoint.m_State.state;
+		}
+
 		__declspec(property(get = GetFriendlyName)) LPCWSTR FriendlyName;
 		__declspec(property(get = GetDescription)) LPCWSTR Description;
 		__declspec(property(get = GetID)) LPCWSTR ID;
 		__declspec(property(get = GetDeviceClassIconPath)) LPCWSTR DeviceClassIconPath;
+		__declspec(property(get = GetDeviceState)) DefSound::EDeviceState DeviceState;
 
 		
 		void SetDefault(ERole role);
