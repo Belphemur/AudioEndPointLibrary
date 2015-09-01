@@ -5,35 +5,36 @@
 #include "Audio.EndPoint.Controller.Wrapper.h"
 #include "AudioEndPointLibrary.h"
 #include "DefSoundException.h"
+#include "AudioDeviceWrapper.h"
 
 using namespace System;
 using namespace AudioEndPointControllerWrapper;
 using namespace AudioEndPoint;
 
 
-List<AudioDeviceWrapper^>^ GetAudioDevicesWrapperList(AudioDeviceListPtr& audioDeviceList)
+List<IAudioDevice^>^ GetAudioDevicesWrapperList(AudioDeviceListPtr& audioDeviceList)
 {
-	List<AudioDeviceWrapper^>^ list = gcnew List<AudioDeviceWrapper^>();
+	List<IAudioDevice^>^ list = gcnew List<IAudioDevice^>();
 	for (AudioDeviceList::iterator i = audioDeviceList->begin(); i != audioDeviceList->end(); i++)
 	{
-		AudioDeviceWrapper^ wrapper = gcnew AudioDeviceWrapper(std::move(*i));
+		IAudioDevice^ wrapper = gcnew AudioDeviceWrapper(std::move(*i));
 		list->Add(wrapper);
 	}
 	return list;
 }
 
-List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::GetActivePlaybackDevices()
+List<IAudioDevice^>^ AudioEndPointControllerWrapper::AudioController::GetActivePlaybackDevices()
 {
 	return AudioController::GetPlaybackDevices(DeviceState::Active);
 }
 
-List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::GetAllPlaybackDevices()
+List<IAudioDevice^>^ AudioEndPointControllerWrapper::AudioController::GetAllPlaybackDevices()
 {
 	return AudioController::GetPlaybackDevices(DeviceState::All);
 }
 
 
-List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::GetPlaybackDevices(DeviceState state)
+List<IAudioDevice^>^ AudioEndPointControllerWrapper::AudioController::GetPlaybackDevices(DeviceState state)
 {
 	try 
 	{
@@ -45,7 +46,7 @@ List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::GetP
 	}
 }
 
-List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::GetRecordingDevices(DeviceState state)
+List<IAudioDevice^>^ AudioEndPointControllerWrapper::AudioController::GetRecordingDevices(DeviceState state)
 {
 	try
 	{
@@ -58,12 +59,12 @@ List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::GetR
 	}
 }
 
-List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::GetActiveRecordingDevices()
+List<IAudioDevice^>^ AudioEndPointControllerWrapper::AudioController::GetActiveRecordingDevices()
 {
 	return AudioController::GetRecordingDevices(DeviceState::Active);
 }
 
-List<AudioDeviceWrapper^>^ AudioEndPointControllerWrapper::AudioController::GetAllRecordingDevices()
+List<IAudioDevice^>^ AudioEndPointControllerWrapper::AudioController::GetAllRecordingDevices()
 {
 	return AudioController::GetRecordingDevices(DeviceState::All);
 }

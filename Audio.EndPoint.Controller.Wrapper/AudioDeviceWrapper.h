@@ -1,19 +1,13 @@
 #pragma once
 
-#include "DeviceState.h"
+#include "IAudioDevice.h"
 
 using namespace System;
 using namespace AudioEndPoint;
 namespace AudioEndPointControllerWrapper {
 
-	public enum class Role {
-		Console = ::eConsole,
-		Multimedia = ::eMultimedia,
-		Communications = ::eCommunications,
-		All
-	};
 
-	public ref class AudioDeviceWrapper
+	public ref class AudioDeviceWrapper : IAudioDevice
 	{
 	private:
 		AudioDevice* _audioDevice;
@@ -24,38 +18,38 @@ namespace AudioEndPointControllerWrapper {
 		}
 		~AudioDeviceWrapper() { this->!AudioDeviceWrapper(); }
 		!AudioDeviceWrapper() { delete _audioDevice; }
-		property String^ FriendlyName {
+		virtual property String^ FriendlyName {
 			String^ get()
 			{
 				return gcnew String(_audioDevice->FriendlyName);
 			}
 		}
 
-		property String^ Description {
+		virtual property String^ Description {
 			String^ get()
 			{
 				return gcnew String(_audioDevice->Description);
 			}
 		}
 
-		property String^ Id {
+		virtual property String^ Id {
 			String^ get()
 			{
 				return gcnew String(_audioDevice->ID);
 			}
 		}
 
-		property String^ DeviceClassIconPath {
+		virtual property String^ DeviceClassIconPath {
 			String^ get()
 			{
 				return gcnew String(_audioDevice->DeviceClassIconPath);
 			}
 		}
 
-		property AudioEndPoint::DeviceState DeviceState {
-			AudioEndPoint::DeviceState get()
+		virtual property AudioEndPointControllerWrapper::DeviceState DeviceState {
+			AudioEndPointControllerWrapper::DeviceState get()
 			{
-				return static_cast<AudioEndPoint::DeviceState>(_audioDevice->DeviceState);
+				return static_cast<AudioEndPointControllerWrapper::DeviceState>(_audioDevice->DeviceState);
 			}
 		}
 
@@ -66,8 +60,8 @@ namespace AudioEndPointControllerWrapper {
 		}
 
 
-		void SetAsDefault(Role role);
-		bool IsDefault(Role role);
+		virtual void SetAsDefault(Role role);
+		virtual bool IsDefault(Role role);
 	};
 }
 

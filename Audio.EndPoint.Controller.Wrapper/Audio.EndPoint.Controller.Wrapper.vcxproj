@@ -213,6 +213,7 @@
     <ClInclude Include="AudioDeviceWrapper.h" />
     <ClInclude Include="DefSoundException.h" />
     <ClInclude Include="DeviceState.h" />
+    <ClInclude Include="IAudioDevice.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="scoped_ptr.h" />
     <ClInclude Include="Stdafx.h" />

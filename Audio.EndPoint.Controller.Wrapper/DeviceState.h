@@ -1,7 +1,7 @@
 #pragma once
 #include "DefSoundDeviceState.h"
 using namespace System;
-namespace AudioEndPoint {
+namespace AudioEndPointControllerWrapper {
 	/*
 	#define DEVICE_STATE_ACTIVE      0x00000001
 	#define DEVICE_STATE_DISABLED    0x00000002
