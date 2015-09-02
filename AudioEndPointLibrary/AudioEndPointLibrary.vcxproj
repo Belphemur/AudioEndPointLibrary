@@ -223,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioDevice.h" />
+    <ClInclude Include="AudioDeviceType.h" />
     <ClInclude Include="AudioEndPointLibrary.h" />
     <ClInclude Include="DefSoundDeviceState.h" />
     <ClInclude Include="DefSoundEndpoint.h" />

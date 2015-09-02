@@ -16,10 +16,10 @@ AudioEndPoint::CAudioEndPointLibrary::CAudioEndPointLibrary()
 AudioEndPoint::AudioDeviceListPtr AudioEndPoint::CAudioEndPointLibrary::GetPlaybackDevices(DefSound::EDeviceState state)
 {
 	AudioDeviceListPtr list(new AudioDeviceList);
-	auto collection = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(state));
+	auto collection = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(state, ::eRender));
 	for(auto &endpoint : collection->Get())
 	{
-		list->push_back(std::make_unique<AudioDevice>(endpoint));
+		list->push_back(std::make_unique<AudioDevice>(endpoint, Playback));
 	}
 
 	return list;
@@ -31,7 +31,7 @@ AudioEndPoint::AudioDeviceListPtr AudioEndPoint::CAudioEndPointLibrary::GetRecor
 	auto collection = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(state, ::eCapture));
 	for (auto &endpoint : collection->Get())
 	{
-		list->push_back(std::make_unique<AudioDevice>(endpoint));
+		list->push_back(std::make_unique<AudioDevice>(endpoint, Recording));
 	}
 
 	return list;

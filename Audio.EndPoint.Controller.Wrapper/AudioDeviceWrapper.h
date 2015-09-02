@@ -53,6 +53,13 @@ namespace AudioEndPointControllerWrapper {
 			}
 		}
 
+		virtual property AudioDeviceType Type {
+			AudioDeviceType get()
+			{
+				return static_cast<AudioDeviceType>(_audioDevice->Type);
+			} 
+		}
+
 
 		virtual String^ ToString() override
 		{
