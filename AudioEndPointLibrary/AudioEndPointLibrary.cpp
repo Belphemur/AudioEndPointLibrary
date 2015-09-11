@@ -20,6 +20,10 @@ namespace AudioEndPoint {
         pNotifclient->Release();
     }
 
+    void CAudioEndPointLibrary::notify(const Event& event, AudioDevice* device) const
+    {
+        for (const auto& obs : m_container.m_observers.at(event)) obs(device);
+    }
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state)
     {
@@ -30,6 +34,7 @@ namespace AudioEndPoint {
         if(foundPlayback != m_container.m_playback.end())
         {
             (*foundPlayback)->GetEndPoint().m_State.state = static_cast<DefSound::EDeviceState>(dw_new_state);
+            notify(STATE_CHANGED, (*foundPlayback).get());
         }
 
         auto foundRecording = find_if(m_container.m_recording.begin(), m_container.m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
@@ -39,6 +44,7 @@ namespace AudioEndPoint {
         if (foundRecording != m_container.m_recording.end())
         {
             (*foundRecording)->GetEndPoint().m_State.state = static_cast<DefSound::EDeviceState>(dw_new_state);
+            notify(STATE_CHANGED, (*foundRecording).get());
         }
         return S_OK;
     }
@@ -52,6 +58,7 @@ namespace AudioEndPoint {
         m_container.m_recording.remove_if([pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
+        notify(REMOVED, nullptr);
         return S_OK;
     }
 
@@ -87,11 +94,13 @@ namespace AudioEndPoint {
     HRESULT CAudioEndPointLibrary::OnDeviceAdded(LPCWSTR pwstr_device_id)
     {
         Refresh();
+        notify(ADDED, nullptr);
         return S_OK;
     }
 
     CAudioEndPointLibrary::~CAudioEndPointLibrary()
     {
+        m_container.m_observers.clear();
         m_container.m_recording.clear();
         m_container.m_playback.clear();
         m_container.m_notif_client.Release();
@@ -124,6 +133,11 @@ namespace AudioEndPoint {
                 list.push_back(endpoint);
         }
         return list;
+    }
+
+    IMMNotificationClientPtr& CAudioEndPointLibrary::GetNotifClient()
+    {
+        return m_container.m_notif_client;
     }
 
     void CAudioEndPointLibrary::Refresh()

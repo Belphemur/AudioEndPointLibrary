@@ -66,10 +66,10 @@
     <ClInclude Include="DefSoundIsDefaultEndpoint.h">
       <Filter>Header Files\DefSound</Filter>
     </ClInclude>
-    <ClInclude Include="AudioDevicesContainer.h">
+    <ClInclude Include="MMNotificationClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MMNotificationClient.h">
+    <ClInclude Include="AudioEndPointLibraryImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

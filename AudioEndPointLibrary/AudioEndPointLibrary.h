@@ -1,10 +1,10 @@
 #include "DefSoundDeviceState.h"
-#include "AudioDevicesContainer.h"
+#include "AudioEndPointLibraryImpl.h"
+#include <utility>
 
 
 // This class is exported from the AudioEndPointLibrary.dll
 namespace AudioEndPoint {
-
 	class AUDIOENDPOINTLIBRARY_API CAudioEndPointLibrary {
 	public:
         ~CAudioEndPointLibrary();
@@ -16,16 +16,28 @@ namespace AudioEndPoint {
         AudioDeviceList GetPlaybackDevices(DefSound::EDeviceState state) const;
         AudioDeviceList GetRecordingDevices(DefSound::EDeviceState state) const;
 
-	    IMMNotificationClientPtr& GetNotifClient()
-	    {
-	        return m_container.m_notif_client;
-	    }
+	    IMMNotificationClientPtr& GetNotifClient();
 
+        template <typename Observer>
+        void RegisterObserver(const Event& event, Observer&& observer)
+        {
+            m_container.m_observers[event].push_back(std::forward<Observer>(observer));
+        }
+
+        template <typename Observer>
+        void RegisterObserver(Event&& event, Observer&& observer)
+        {
+            m_container.m_observers[std::move(event)].push_back(std::forward<Observer>(observer));
+        }
 	    void Refresh();
     private:
         CAudioEndPointLibrary(void);
         CAudioEndPointLibrary(CAudioEndPointLibrary const&) = delete;
         void operator=(CAudioEndPointLibrary const&) = delete;
-        AudioDevicesContainer m_container;
+        void notify(const Event& event, AudioDevice* device) const;
+
+        AudioEndPointLibraryImpl m_container;
 	};
+
+
 }
