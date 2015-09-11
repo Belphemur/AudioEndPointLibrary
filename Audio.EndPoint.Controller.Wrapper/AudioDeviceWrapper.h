@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IAudioDevice.h"
-
 using namespace System;
 using namespace AudioEndPoint;
 namespace AudioEndPointControllerWrapper {
@@ -10,14 +8,13 @@ namespace AudioEndPointControllerWrapper {
 	public ref class AudioDeviceWrapper : IAudioDevice
 	{
 	private:
-		AudioDevice* _audioDevice;
+	    SharedNativePtr<AudioDevice> _audioDevice;
 	public:
-		AudioDeviceWrapper(std::unique_ptr<AudioDevice>& device)
+		AudioDeviceWrapper(std::shared_ptr<AudioDevice> device)
 		{
-			_audioDevice = device.release();
+            _audioDevice.Reset(device);
 		}
-		~AudioDeviceWrapper() { this->!AudioDeviceWrapper(); }
-		!AudioDeviceWrapper() { delete _audioDevice; }
+        ~AudioDeviceWrapper() { _audioDevice.Reset(); }
 		virtual property String^ FriendlyName {
 			String^ get()
 			{

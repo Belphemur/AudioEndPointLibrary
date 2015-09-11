@@ -17,7 +17,7 @@ List<IAudioDevice^>^ GetAudioDevicesWrapperList(AudioDeviceListPtr& audioDeviceL
 	List<IAudioDevice^>^ list = gcnew List<IAudioDevice^>();
 	for (AudioDeviceList::iterator i = audioDeviceList->begin(); i != audioDeviceList->end(); i++)
 	{
-		IAudioDevice^ wrapper = gcnew AudioDeviceWrapper(std::move(*i));
+		IAudioDevice^ wrapper = gcnew AudioDeviceWrapper(*i);
 		list->Add(wrapper);
 	}
 	return list;

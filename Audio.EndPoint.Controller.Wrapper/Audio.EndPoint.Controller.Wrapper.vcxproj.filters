@@ -27,9 +27,6 @@
     <ClInclude Include="DefSoundException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scoped_ptr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DeviceState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -37,6 +34,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IAudioDevice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedNativePtr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -26,8 +26,9 @@
 
 #include "ExportDll.h"
 
+#include "IAudioDevice.h"
+#include "SharedNativePtr.h"
 #include "AudioDevice.h"
 #include "DefSoundError.h"
-#include "scoped_ptr.h"
 #include <list>
 
