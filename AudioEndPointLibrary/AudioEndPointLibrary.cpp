@@ -5,34 +5,57 @@
 #include "AudioEndPointLibrary.h"
 #include "DefSoundEndpointColl.h"
 
+namespace AudioEndPoint {
+    // This is the constructor of a class that has been exported.
+    // see AudioEndPointLibrary.h for the class definition
+    CAudioEndPointLibrary::CAudioEndPointLibrary()
+    {
+        auto playbackPtr = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(DefSound::All, ::eRender));
+        for (auto &endpoint : playbackPtr->Get())
+        {
+            m_container.m_playback.push_back(std::make_shared<AudioDevice>(endpoint, Playback));
+        }
 
-// This is the constructor of a class that has been exported.
-// see AudioEndPointLibrary.h for the class definition
-AudioEndPoint::CAudioEndPointLibrary::CAudioEndPointLibrary()
-{
-    return;
-}
+        auto recordingPtr = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(DefSound::All, ::eCapture));
+        for (auto &endpoint : recordingPtr->Get())
+        {
+            m_container.m_recording.push_back(std::make_shared<AudioDevice>(endpoint, Recording));
+        }
+    }
 
-AudioEndPoint::AudioDeviceListPtr AudioEndPoint::CAudioEndPointLibrary::GetPlaybackDevices(DefSound::EDeviceState state)
-{
-	AudioDeviceListPtr list(new AudioDeviceList);
-	auto collection = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(state, ::eRender));
-	for(auto &endpoint : collection->Get())
-	{
-		list->push_back(std::make_shared<AudioDevice>(endpoint, Playback));
-	}
 
-	return list;
-}
+    CAudioEndPointLibrary::~CAudioEndPointLibrary()
+    {
+        m_container.m_recording.clear();
+        m_container.m_playback.clear();
+    }
 
-AudioEndPoint::AudioDeviceListPtr AudioEndPoint::CAudioEndPointLibrary::GetRecordingDevices(DefSound::EDeviceState state)
-{
-	AudioDeviceListPtr list(new AudioDeviceList);
-	auto collection = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(state, ::eCapture));
-	for (auto &endpoint : collection->Get())
-	{
-		list->push_back(std::make_shared<AudioDevice>(endpoint, Recording));
-	}
+    CAudioEndPointLibrary& CAudioEndPointLibrary::GetInstance()
+    {
+        static CAudioEndPointLibrary instance;
+        return instance;
+    }
 
-	return list;
+    AudioDeviceList CAudioEndPointLibrary::GetPlaybackDevices(DefSound::EDeviceState state) const
+    {
+        AudioDeviceList list;     
+        for (auto &endpoint : m_container.m_playback)
+        {
+            if(endpoint->GetDeviceState() == state)
+                list.push_back(endpoint);
+        }
+
+        return list;
+    }
+
+    AudioDeviceList CAudioEndPointLibrary::GetRecordingDevices(DefSound::EDeviceState state) const
+    {
+        AudioDeviceList list;
+        for (auto &endpoint : m_container.m_recording)
+        {
+            if (endpoint->GetDeviceState() == state)
+                list.push_back(endpoint);
+        }
+        return list;
+    }
 }

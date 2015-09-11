@@ -12,10 +12,10 @@ using namespace AudioEndPointControllerWrapper;
 using namespace AudioEndPoint;
 
 
-List<IAudioDevice^>^ GetAudioDevicesWrapperList(AudioDeviceListPtr& audioDeviceList)
+List<IAudioDevice^>^ GetAudioDevicesWrapperList(AudioDeviceList& audioDeviceList)
 {
 	List<IAudioDevice^>^ list = gcnew List<IAudioDevice^>();
-	for (AudioDeviceList::iterator i = audioDeviceList->begin(); i != audioDeviceList->end(); i++)
+	for (AudioDeviceList::iterator i = audioDeviceList.begin(); i != audioDeviceList.end(); i++)
 	{
 		IAudioDevice^ wrapper = gcnew AudioDeviceWrapper(*i);
 		list->Add(wrapper);
@@ -38,7 +38,7 @@ List<IAudioDevice^>^ AudioEndPointControllerWrapper::AudioController::GetPlaybac
 {
 	try 
 	{
-		AudioDeviceListPtr audioDeviceList = CAudioEndPointLibrary::GetPlaybackDevices(static_cast<DefSound::EDeviceState>(state));
+		AudioDeviceList audioDeviceList = CAudioEndPointLibrary::GetInstance().GetPlaybackDevices(static_cast<DefSound::EDeviceState>(state));
 		return GetAudioDevicesWrapperList(audioDeviceList);
 	} catch(DefSound::CError error)
 	{
@@ -50,7 +50,7 @@ List<IAudioDevice^>^ AudioEndPointControllerWrapper::AudioController::GetRecordi
 {
 	try
 	{
-		AudioDeviceListPtr audioDeviceList = CAudioEndPointLibrary::GetRecordingDevices(static_cast<DefSound::EDeviceState>(state));
+		AudioDeviceList audioDeviceList = CAudioEndPointLibrary::GetInstance().GetRecordingDevices(static_cast<DefSound::EDeviceState>(state));
 		return GetAudioDevicesWrapperList(audioDeviceList);
 	}
 	catch (DefSound::CError error)

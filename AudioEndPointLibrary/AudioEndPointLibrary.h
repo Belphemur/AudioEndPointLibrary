@@ -1,17 +1,19 @@
-#include "AudioDevice.h"
-#include <list>
 #include "DefSoundDeviceState.h"
+#include "AudioDevicesContainer.h"
 
 // This class is exported from the AudioEndPointLibrary.dll
 namespace AudioEndPoint {
-	typedef std::shared_ptr<AudioDevice> AudioDevicePtr;
-	typedef std::list<AudioDevicePtr> AudioDeviceList;
-	typedef std::unique_ptr<AudioDeviceList> AudioDeviceListPtr;
 
 	class AUDIOENDPOINTLIBRARY_API CAudioEndPointLibrary {
-		CAudioEndPointLibrary(void);
 	public:
-		static AudioDeviceListPtr GetPlaybackDevices(DefSound::EDeviceState state);
-		static AudioDeviceListPtr GetRecordingDevices(DefSound::EDeviceState state);
+        ~CAudioEndPointLibrary();
+        static CAudioEndPointLibrary& GetInstance();
+        AudioDeviceList GetPlaybackDevices(DefSound::EDeviceState state) const;
+        AudioDeviceList GetRecordingDevices(DefSound::EDeviceState state) const;
+    private:
+        CAudioEndPointLibrary(void);
+        CAudioEndPointLibrary(CAudioEndPointLibrary const&) = delete;
+        void operator=(CAudioEndPointLibrary const&) = delete;
+        AudioDevicesContainer m_container;
 	};
 }

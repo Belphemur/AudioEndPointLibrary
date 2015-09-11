@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\DefSound">
+      <UniqueIdentifier>{cf2f92c5-f375-4a19-82f3-8009c2094554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DefSound">
+      <UniqueIdentifier>{185d673e-7b99-488a-8705-b83129e2d84f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -30,34 +36,37 @@
     <ClInclude Include="ExportDll.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DefSoundEndpointColl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DefSoundEndpointRole.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DefSoundError.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PolicyConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AudioDevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DefSoundIsDefaultEndpoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DefSoundDeviceState.h">
+    <ClInclude Include="AudioDeviceType.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DefSoundDeviceState.h">
+      <Filter>Header Files\DefSound</Filter>
     </ClInclude>
     <ClInclude Include="DefSoundEndpoint.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\DefSound</Filter>
     </ClInclude>
-    <ClInclude Include="AudioDeviceType.h">
+    <ClInclude Include="DefSoundEndpointColl.h">
+      <Filter>Header Files\DefSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DefSoundEndpointRole.h">
+      <Filter>Header Files\DefSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DefSoundError.h">
+      <Filter>Header Files\DefSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DefSoundIsDefaultEndpoint.h">
+      <Filter>Header Files\DefSound</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioDevicesContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -71,20 +80,20 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DefSoundEndpointColl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DefSoundEndpointRole.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DefSoundError.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AudioDevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DefSoundEndpointColl.cpp">
+      <Filter>Source Files\DefSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DefSoundEndpointRole.cpp">
+      <Filter>Source Files\DefSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DefSoundError.cpp">
+      <Filter>Source Files\DefSound</Filter>
+    </ClCompile>
     <ClCompile Include="DefSoundIsDefaultEndpoint.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\DefSound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
