@@ -72,13 +72,13 @@ namespace AudioEndPoint {
 
         for(auto& device : *list)
         {
-            for(auto & isDefault : device->GetEndPoint().m_IsDefault)
-            {
-                isDefault = false;
-            }
             if(wcscmp(device->ID, pwstr_default_device_id) == 0)
             {
                 device->GetEndPoint().m_IsDefault[role] = true;
+            } 
+            else
+            {
+                device->GetEndPoint().m_IsDefault[role] = false;
             }
         }
         return S_OK;
