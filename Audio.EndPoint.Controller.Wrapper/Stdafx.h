@@ -20,6 +20,7 @@
 #include <vector>
 #include <memory>
 
+#include <comdef.h>
 #pragma comment(lib, "comsuppw.lib")
 #include <comip.h>
 #include <comutil.h>

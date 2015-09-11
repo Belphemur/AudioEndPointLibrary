@@ -46,6 +46,11 @@ namespace AudioEndPoint {
 			return type;
 		}
 
+        DefSound::CEndpoint& GetEndPoint()
+		{
+            return endpoint;
+		}
+
 		__declspec(property(get = GetType)) AudioDeviceType Type;
 		__declspec(property(get = GetFriendlyName)) LPCWSTR FriendlyName;
 		__declspec(property(get = GetDescription)) LPCWSTR Description;

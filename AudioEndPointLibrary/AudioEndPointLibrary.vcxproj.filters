@@ -69,6 +69,9 @@
     <ClInclude Include="AudioDevicesContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MMNotificationClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="DefSoundIsDefaultEndpoint.cpp">
       <Filter>Source Files\DefSound</Filter>
+    </ClCompile>
+    <ClCompile Include="MMNotificationClient.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

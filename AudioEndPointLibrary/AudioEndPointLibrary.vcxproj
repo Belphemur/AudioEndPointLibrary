@@ -233,6 +233,7 @@
     <ClInclude Include="DefSoundError.h" />
     <ClInclude Include="DefSoundIsDefaultEndpoint.h" />
     <ClInclude Include="ExportDll.h" />
+    <ClInclude Include="MMNotificationClient.h" />
     <ClInclude Include="PolicyConfig.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -265,6 +266,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='AppVeyor|x64'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MMNotificationClient.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
