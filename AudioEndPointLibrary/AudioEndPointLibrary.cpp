@@ -20,7 +20,7 @@ namespace AudioEndPoint {
         pNotifclient->Release();
     }
 
-    void CAudioEndPointLibrary::notify(const Event& event, AudioDevice* device) const
+    void CAudioEndPointLibrary::notify(const Event& event, AudioDevicePtr device) const
     {
         for (const auto& obs : m_container.m_observers.at(event)) obs(device);
     }
@@ -34,7 +34,7 @@ namespace AudioEndPoint {
         if(foundPlayback != m_container.m_playback.end())
         {
             (*foundPlayback)->GetEndPoint().m_State.state = static_cast<DefSound::EDeviceState>(dw_new_state);
-            notify(STATE_CHANGED, (*foundPlayback).get());
+            notify(STATE_CHANGED, (*foundPlayback));
         }
 
         auto foundRecording = find_if(m_container.m_recording.begin(), m_container.m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
@@ -44,7 +44,7 @@ namespace AudioEndPoint {
         if (foundRecording != m_container.m_recording.end())
         {
             (*foundRecording)->GetEndPoint().m_State.state = static_cast<DefSound::EDeviceState>(dw_new_state);
-            notify(STATE_CHANGED, (*foundRecording).get());
+            notify(STATE_CHANGED, (*foundRecording));
         }
         return S_OK;
     }

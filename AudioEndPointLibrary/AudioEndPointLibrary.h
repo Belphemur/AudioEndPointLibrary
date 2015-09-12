@@ -34,7 +34,7 @@ namespace AudioEndPoint {
         CAudioEndPointLibrary(void);
         CAudioEndPointLibrary(CAudioEndPointLibrary const&) = delete;
         void operator=(CAudioEndPointLibrary const&) = delete;
-        void notify(const Event& event, AudioDevice* device) const;
+        void notify(const Event& event, AudioDevicePtr device) const;
 
         AudioEndPointLibraryImpl m_container;
 	};

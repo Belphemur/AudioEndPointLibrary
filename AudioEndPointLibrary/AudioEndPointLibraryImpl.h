@@ -17,6 +17,6 @@ namespace AudioEndPoint {
         AudioDeviceList m_playback;
         AudioDeviceList m_recording;
         IMMNotificationClientPtr m_notif_client;
-        std::map<Event, std::vector<std::function<void(AudioDevice*)>>> m_observers;
+        std::map<Event, std::vector<std::function<void(AudioDevicePtr)>>> m_observers;
     };
 }
