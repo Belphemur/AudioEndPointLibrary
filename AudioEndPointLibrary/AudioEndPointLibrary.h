@@ -1,6 +1,6 @@
 #include "DefSoundDeviceState.h"
 #include "AudioEndPointLibraryImpl.h"
-#include <utility>
+#include "Signal.h"
 
 
 // This class is exported from the AudioEndPointLibrary.dll
@@ -18,25 +18,20 @@ namespace AudioEndPoint {
 
 	    IMMNotificationClientPtr& GetNotifClient();
 
-        template <typename Observer>
-        void RegisterObserver(const Event& event, Observer&& observer)
-        {
-            m_container.m_observers[event].push_back(std::forward<Observer>(observer));
-        }
+	    AudioEndPointLibrarySignals& m_signals1()
+	    {
+	        return m_signals;
+	    }
 
-        template <typename Observer>
-        void RegisterObserver(Event&& event, Observer&& observer)
-        {
-            m_container.m_observers[std::move(event)].push_back(std::forward<Observer>(observer));
-        }
+	    __declspec(property(get = m_signals1)) AudioEndPointLibrarySignals Signals;
 	    void Refresh();
     private:
         CAudioEndPointLibrary(void);
         CAudioEndPointLibrary(CAudioEndPointLibrary const&) = delete;
         void operator=(CAudioEndPointLibrary const&) = delete;
-        void notify(const Event& event, AudioDevicePtr device) const;
 
         AudioEndPointLibraryImpl m_container;
+        AudioEndPointLibrarySignals m_signals;
 	};
 
 

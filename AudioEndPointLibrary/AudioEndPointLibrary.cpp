@@ -20,31 +20,29 @@ namespace AudioEndPoint {
         pNotifclient->Release();
     }
 
-    void CAudioEndPointLibrary::notify(const Event& event, AudioDevicePtr device) const
-    {
-        for (const auto& obs : m_container.m_observers.at(event)) obs(device);
-    }
-
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state)
     {
-        auto foundPlayback = find_if(m_container.m_playback.begin(), m_container.m_playback.end(),[pwstr_device_id](AudioDevicePtr device) {
+        auto audio_device = find_if(m_container.m_playback.begin(), m_container.m_playback.end(),[pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
 
-        if(foundPlayback != m_container.m_playback.end())
+        auto e_device_state = static_cast<DefSound::EDeviceState>(dw_new_state);
+        if(audio_device != m_container.m_playback.end())
         {
-            (*foundPlayback)->GetEndPoint().m_State.state = static_cast<DefSound::EDeviceState>(dw_new_state);
-            notify(STATE_CHANGED, (*foundPlayback));
+            auto prevState = (*audio_device)->GetEndPoint().m_State.state;
+            (*audio_device)->GetEndPoint().m_State.state = e_device_state;
+            Signals.DeviceStateChanged.Notify((*audio_device), prevState, e_device_state);
         }
 
-        auto foundRecording = find_if(m_container.m_recording.begin(), m_container.m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
+        audio_device = find_if(m_container.m_recording.begin(), m_container.m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
 
-        if (foundRecording != m_container.m_recording.end())
+        if (audio_device != m_container.m_recording.end())
         {
-            (*foundRecording)->GetEndPoint().m_State.state = static_cast<DefSound::EDeviceState>(dw_new_state);
-            notify(STATE_CHANGED, (*foundRecording));
+            auto prevState = (*audio_device)->GetEndPoint().m_State.state;
+            (*audio_device)->GetEndPoint().m_State.state = e_device_state;
+            Signals.DeviceStateChanged.Notify((*audio_device), prevState, e_device_state);
         }
         return S_OK;
     }
@@ -58,7 +56,7 @@ namespace AudioEndPoint {
         m_container.m_recording.remove_if([pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
-        notify(REMOVED, nullptr);
+        Signals.DeviceRemoved.Notify();
         return S_OK;
     }
 
@@ -82,25 +80,26 @@ namespace AudioEndPoint {
             if(wcscmp(device->ID, pwstr_default_device_id) == 0)
             {
                 device->GetEndPoint().m_IsDefault[role] = true;
+                Signals.DeviceDefaultChanged.Notify(device, role);
             } 
             else
             {
                 device->GetEndPoint().m_IsDefault[role] = false;
             }
         }
+        
         return S_OK;
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceAdded(LPCWSTR pwstr_device_id)
     {
         Refresh();
-        notify(ADDED, nullptr);
+        Signals.DeviceAdded.Notify();
         return S_OK;
     }
 
     CAudioEndPointLibrary::~CAudioEndPointLibrary()
     {
-        m_container.m_observers.clear();
         m_container.m_recording.clear();
         m_container.m_playback.clear();
         m_container.m_notif_client.Release();
