@@ -49,14 +49,25 @@ namespace AudioEndPoint {
 
     HRESULT CAudioEndPointLibrary::OnDeviceRemoved(LPCWSTR pwstr_device_id)
     {
-        m_container.m_playback.remove_if([pwstr_device_id](AudioDevicePtr device) {
+        auto audio_device = find_if(m_container.m_playback.begin(), m_container.m_playback.end(), [pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
 
-        m_container.m_recording.remove_if([pwstr_device_id](AudioDevicePtr device) {
+        if (audio_device != m_container.m_playback.end())
+        {
+            Signals.DeviceRemoved.Notify(*audio_device);
+            m_container.m_playback.remove(*audio_device);
+        }
+
+        audio_device = find_if(m_container.m_recording.begin(), m_container.m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
-        Signals.DeviceRemoved.Notify();
+
+        if (audio_device != m_container.m_recording.end())
+        {
+            Signals.DeviceRemoved.Notify(*audio_device);
+            m_container.m_playback.remove(*audio_device);
+        }
         return S_OK;
     }
 
@@ -94,7 +105,24 @@ namespace AudioEndPoint {
     HRESULT CAudioEndPointLibrary::OnDeviceAdded(LPCWSTR pwstr_device_id)
     {
         Refresh();
-        Signals.DeviceAdded.Notify();
+        auto audio_device = find_if(m_container.m_playback.begin(), m_container.m_playback.end(), [pwstr_device_id](AudioDevicePtr device) {
+            return wcscmp(device->ID, pwstr_device_id) == 0;
+        });
+
+        if (audio_device != m_container.m_playback.end())
+        {
+            Signals.DeviceAdded.Notify(*audio_device);
+        }
+
+        audio_device = find_if(m_container.m_recording.begin(), m_container.m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
+            return wcscmp(device->ID, pwstr_device_id) == 0;
+        });
+
+        if (audio_device != m_container.m_recording.end())
+        {
+            Signals.DeviceAdded.Notify(*audio_device);
+        }
+
         return S_OK;
     }
 

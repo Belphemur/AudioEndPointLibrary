@@ -20,8 +20,8 @@ namespace AudioEndPoint {
 
     struct AudioEndPointLibrarySignals
     {
-        Signal<> DeviceRemoved;
-        Signal<> DeviceAdded;
+        Signal<AudioDevicePtr> DeviceRemoved;
+        Signal<AudioDevicePtr> DeviceAdded;
         Signal<AudioDevicePtr, DefSound::EDeviceState, DefSound::EDeviceState> DeviceStateChanged;
         Signal<AudioDevicePtr, ERole> DeviceDefaultChanged;
     };
