@@ -6,34 +6,14 @@
 #include "AudioEndPointLibrary.h"
 #include "DefSoundException.h"
 #include "AudioDeviceWrapper.h"
+#include "EventWrapper.h"
 
 using namespace System;
 using namespace AudioEndPoint;
 
 namespace AudioEndPointControllerWrapper {
 
-    static AudioController::AudioController()
-    {
-        CAudioEndPointLibrary::GetInstance().Signals.DeviceAdded.Register([](AudioDevicePtr device)
-        {
-            AudioController::DeviceAdded(nullptr, gcnew DeviceAddedEvent(gcnew AudioDeviceWrapper(device)));
-        });
-
-        CAudioEndPointLibrary::GetInstance().Signals.DeviceRemoved.Register([](AudioDevicePtr device)
-        {
-            AudioController::DeviceRemoved(nullptr, gcnew DeviceRemovedEvent(gcnew AudioDeviceWrapper(device)));
-        });
-
-        CAudioEndPointLibrary::GetInstance().Signals.DeviceDefaultChanged.Register([](AudioDevicePtr device, ERole role)
-        {
-            AudioController::DeviceDefaultChanged(nullptr, gcnew DeviceDefaultChangedEvent(gcnew AudioDeviceWrapper(device), static_cast<Role>(role)));
-        });
-
-        CAudioEndPointLibrary::GetInstance().Signals.DeviceStateChanged.Register([](AudioDevicePtr device, DefSound::EDeviceState prev, DefSound::EDeviceState cur)
-        {
-            AudioController::DeviceStateChanged(nullptr, gcnew DeviceStateChangedEvent(gcnew AudioDeviceWrapper(device), static_cast<DeviceState>(prev), static_cast<DeviceState>(cur)));
-        });
-    }
+    static EventWrapper wrapper;
 
     List<IAudioDevice^>^ GetAudioDevicesWrapperList(AudioDeviceList& audioDeviceList)
     {
@@ -91,5 +71,21 @@ namespace AudioEndPointControllerWrapper {
     List<IAudioDevice^>^ AudioController::GetAllRecordingDevices()
     {
         return AudioController::GetRecordingDevices(DeviceState::All);
+    }
+    void AudioController::RaiseAdded(DeviceAddedEvent ^ devEvent)
+    {
+        DeviceAdded(nullptr, devEvent);
+    }
+    void AudioController::RaiseRemoved(DeviceRemovedEvent ^ devEvent)
+    {
+        DeviceRemoved(nullptr, devEvent);
+    }
+    void AudioController::RaiseState(DeviceStateChangedEvent ^ devEvent)
+    {
+        DeviceStateChanged(nullptr, devEvent);
+    }
+    void AudioController::RaiseDefault(DeviceDefaultChangedEvent ^ devEvent)
+    {
+        DeviceDefaultChanged(nullptr, devEvent);
     }
 }

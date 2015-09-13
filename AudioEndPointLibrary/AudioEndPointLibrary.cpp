@@ -128,8 +128,6 @@ namespace AudioEndPoint {
 
     CAudioEndPointLibrary::~CAudioEndPointLibrary()
     {
-        m_container.m_recording.clear();
-        m_container.m_playback.clear();
         m_container.m_notif_client.Release();
     }
 
@@ -141,7 +139,12 @@ namespace AudioEndPoint {
 
     AudioDeviceList CAudioEndPointLibrary::GetPlaybackDevices(DefSound::EDeviceState state) const
     {
-        AudioDeviceList list;     
+        if(state == DefSound::All)
+        {
+            return m_container.m_playback;
+        }
+
+        AudioDeviceList list;
         for (auto &endpoint : m_container.m_playback)
         {
             if(endpoint->GetDeviceState() == state)
@@ -153,6 +156,11 @@ namespace AudioEndPoint {
 
     AudioDeviceList CAudioEndPointLibrary::GetRecordingDevices(DefSound::EDeviceState state) const
     {
+        if (state == DefSound::All)
+        {
+            return m_container.m_playback;
+        }
+
         AudioDeviceList list;
         for (auto &endpoint : m_container.m_recording)
         {

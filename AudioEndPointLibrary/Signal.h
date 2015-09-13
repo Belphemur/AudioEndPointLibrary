@@ -26,8 +26,7 @@ namespace AudioEndPoint
 
         ~Signal()
         {
-            DeleteCriticalSection(&m_critical_section);
-            
+            DeleteCriticalSection(&m_critical_section);            
         }
 
         template <typename Observer>

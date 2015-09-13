@@ -8,6 +8,10 @@
 namespace AudioEndPoint {
     typedef std::shared_ptr<AudioDevice> AudioDevicePtr;
     typedef std::list<AudioDevicePtr> AudioDeviceList;
+    typedef Signal<AudioDevicePtr> DeviceSignal;
+    typedef Signal<AudioDevicePtr, DefSound::EDeviceState, DefSound::EDeviceState> DeviceStateSignal;
+    typedef Signal<AudioDevicePtr, ERole> DeviceDefaultSignal;
+
     _COM_SMARTPTR_TYPEDEF(IMMNotificationClient, __uuidof(IMMNotificationClient));
 
     struct AudioEndPointLibraryImpl
@@ -20,9 +24,9 @@ namespace AudioEndPoint {
 
     struct AudioEndPointLibrarySignals
     {
-        Signal<AudioDevicePtr> DeviceRemoved;
-        Signal<AudioDevicePtr> DeviceAdded;
-        Signal<AudioDevicePtr, DefSound::EDeviceState, DefSound::EDeviceState> DeviceStateChanged;
-        Signal<AudioDevicePtr, ERole> DeviceDefaultChanged;
+        DeviceSignal DeviceRemoved;
+        DeviceSignal DeviceAdded;
+        DeviceStateSignal DeviceStateChanged;
+        DeviceDefaultSignal DeviceDefaultChanged;
     };
 }
