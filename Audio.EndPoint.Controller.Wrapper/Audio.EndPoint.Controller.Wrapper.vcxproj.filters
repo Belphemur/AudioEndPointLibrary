@@ -39,6 +39,9 @@
     <ClInclude Include="SharedNativePtr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Audio.EndPoint.Controller.Wrapper.cpp">
