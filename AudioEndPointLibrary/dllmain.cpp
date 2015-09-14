@@ -31,12 +31,16 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+#ifndef APPVEYOR
         return SUCCEEDED(RegisterMMNotificationClient(AudioEndPoint::CAudioEndPointLibrary::GetInstance().GetNotifClient()));
+#endif
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
         break;
 	case DLL_PROCESS_DETACH:
+#ifndef APPVEYOR
         return SUCCEEDED(UnregisterMMNotificationClient(AudioEndPoint::CAudioEndPointLibrary::GetInstance().GetNotifClient()));
+#endif
 	}
 	return TRUE;
 }
