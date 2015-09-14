@@ -158,7 +158,7 @@ namespace AudioEndPoint {
     {
         if (state == DefSound::All)
         {
-            return m_container.m_playback;
+            return m_container.m_recording;
         }
 
         AudioDeviceList list;
