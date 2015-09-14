@@ -63,6 +63,8 @@ namespace AudioEndPointControllerWrapper {
 			return FriendlyName;
 		}
 
+        virtual bool Equals(Object^ o) override;
+        virtual int GetHashCode() override;
 
 		virtual void SetAsDefault(Role role);
 		virtual bool IsDefault(Role role);

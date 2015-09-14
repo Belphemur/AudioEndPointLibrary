@@ -5,6 +5,25 @@
 using namespace System;
 
 
+bool AudioEndPointControllerWrapper::AudioDeviceWrapper::Equals(Object ^ o)
+{
+    if (o == (Object^)nullptr)
+        return false;
+
+    if(o->GetType() != this->GetType())
+    {
+        return false;
+    }
+
+    AudioDeviceWrapper^ that = static_cast<AudioDeviceWrapper^>(o);
+    return that->Id == Id;
+}
+
+int AudioEndPointControllerWrapper::AudioDeviceWrapper::GetHashCode()
+{
+    return this->Id->GetHashCode();
+}
+
 void AudioEndPointControllerWrapper::AudioDeviceWrapper::SetAsDefault(Role role)
 {
 	try 
