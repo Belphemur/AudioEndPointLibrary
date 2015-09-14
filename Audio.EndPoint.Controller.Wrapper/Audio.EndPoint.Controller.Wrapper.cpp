@@ -12,8 +12,9 @@ using namespace System;
 using namespace AudioEndPoint;
 
 namespace AudioEndPointControllerWrapper {
-
+#ifndef APPVEYOR //AppVeyor don't like to do anything with Audio. (Windows Server)
     static EventWrapper wrapper;
+#endif
 
     List<IAudioDevice^>^ GetAudioDevicesWrapperList(AudioDeviceList& audioDeviceList)
     {
