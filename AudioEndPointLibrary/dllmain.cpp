@@ -40,6 +40,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	case DLL_PROCESS_DETACH:
 #ifndef APPVEYOR
         return SUCCEEDED(UnregisterMMNotificationClient(AudioEndPoint::CAudioEndPointLibrary::GetInstance().GetNotifClient()));
+#else
+        break;
 #endif
 	}
 	return TRUE;
