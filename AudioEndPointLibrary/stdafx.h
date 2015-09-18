@@ -27,6 +27,9 @@
 #include <comip.h>
 #include <comutil.h>
 
+#include <combase.h>
+#include <wxutil.h>
+
 #include "DefSoundError.h"
 #include "ExportDll.h"
 
