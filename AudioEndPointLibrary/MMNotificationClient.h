@@ -2,21 +2,19 @@
 #include "mmdeviceapi.h"
 namespace AudioEndPoint {
     class CMMNotificationClient :
+        public CUnknown,
         public IMMNotificationClient
     {
     public:
-        HRESULT STDMETHODCALLTYPE QueryInterface(const IID& riid, void** ppvObject) override;
-        ULONG STDMETHODCALLTYPE AddRef() override;
-        ULONG STDMETHODCALLTYPE Release() override;
-        HRESULT STDMETHODCALLTYPE OnDeviceStateChanged(LPCWSTR pwstrDeviceId, DWORD dwNewState) override;
-        HRESULT STDMETHODCALLTYPE OnDeviceAdded(LPCWSTR pwstrDeviceId) override;
-        HRESULT STDMETHODCALLTYPE OnDeviceRemoved(LPCWSTR pwstrDeviceId) override;
-        HRESULT STDMETHODCALLTYPE OnDefaultDeviceChanged(EDataFlow flow, ERole role, LPCWSTR pwstrDefaultDeviceId) override;
-        HRESULT STDMETHODCALLTYPE OnPropertyValueChanged(LPCWSTR pwstrDeviceId, const PROPERTYKEY key) override;
+        DECLARE_IUNKNOWN
+
+        STDMETHODIMP OnDeviceStateChanged(LPCWSTR pwstrDeviceId, DWORD dwNewState) override;
+        STDMETHODIMP OnDeviceAdded(LPCWSTR pwstrDeviceId) override;
+        STDMETHODIMP OnDeviceRemoved(LPCWSTR pwstrDeviceId) override;
+        STDMETHODIMP OnDefaultDeviceChanged(EDataFlow flow, ERole role, LPCWSTR pwstrDefaultDeviceId) override;
+        STDMETHODIMP OnPropertyValueChanged(LPCWSTR pwstrDeviceId, const PROPERTYKEY key) override;
+        STDMETHODIMP NonDelegatingQueryInterface(REFIID riid, void** ppv);
         CMMNotificationClient();
-        virtual ~CMMNotificationClient();
-    private:
-        ULONG m_cRef;
     };
 }
 

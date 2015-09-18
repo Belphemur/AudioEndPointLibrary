@@ -15,9 +15,9 @@ namespace AudioEndPoint {
         Refresh();
 
         auto pNotifclient = new(std::nothrow) AudioEndPoint::CMMNotificationClient;
-        pNotifclient->AddRef();
-        pNotifclient->QueryInterface(IID_PPV_ARGS(&m_container.m_notif_client));
-        pNotifclient->Release();
+        pNotifclient->NonDelegatingAddRef();
+        pNotifclient->NonDelegatingQueryInterface(IID_PPV_ARGS(&m_container.m_notif_client));
+        pNotifclient->NonDelegatingRelease();
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state)

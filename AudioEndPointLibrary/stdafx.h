@@ -27,6 +27,7 @@
 #include <comip.h>
 #include <comutil.h>
 
+#include <streams.h>
 #include <combase.h>
 #include <wxutil.h>
 
