@@ -1,6 +1,5 @@
 #include "DefSoundDeviceState.h"
 #include "AudioEndPointLibraryImpl.h"
-#include "Signal.h"
 
 
 // This class is exported from the AudioEndPointLibrary.dll

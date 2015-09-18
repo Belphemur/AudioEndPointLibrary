@@ -8,12 +8,13 @@
 #include <algorithm>
 
 namespace AudioEndPoint {
+
+    CCritSec c_crit_sec;
     // This is the constructor of a class that has been exported.
     // see AudioEndPointLibrary.h for the class definition
     CAudioEndPointLibrary::CAudioEndPointLibrary()
     {
         Refresh();
-
         auto pNotifclient = new(std::nothrow) AudioEndPoint::CMMNotificationClient;
         pNotifclient->NonDelegatingAddRef();
         pNotifclient->NonDelegatingQueryInterface(IID_PPV_ARGS(&m_container.m_notif_client));
@@ -22,6 +23,7 @@ namespace AudioEndPoint {
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state)
     {
+        CAutoLock lock(&c_crit_sec);
         auto audio_device = find_if(m_container.m_playback.begin(), m_container.m_playback.end(),[pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
@@ -49,6 +51,7 @@ namespace AudioEndPoint {
 
     HRESULT CAudioEndPointLibrary::OnDeviceRemoved(LPCWSTR pwstr_device_id)
     {
+        CAutoLock lock(&c_crit_sec);
         auto audio_device = find_if(m_container.m_playback.begin(), m_container.m_playback.end(), [pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
@@ -73,6 +76,7 @@ namespace AudioEndPoint {
 
     HRESULT CAudioEndPointLibrary::OnDefaultDeviceChanged(EDataFlow flow, ERole role, LPCWSTR pwstr_default_device_id)
     {
+        CAutoLock lock(&c_crit_sec);
         AudioDeviceList* list = nullptr;
         if(flow == ::eRender)
         {
@@ -105,6 +109,7 @@ namespace AudioEndPoint {
     HRESULT CAudioEndPointLibrary::OnDeviceAdded(LPCWSTR pwstr_device_id)
     {
         Refresh();
+        CAutoLock lock(&c_crit_sec);
         auto audio_device = find_if(m_container.m_playback.begin(), m_container.m_playback.end(), [pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
@@ -139,6 +144,7 @@ namespace AudioEndPoint {
 
     AudioDeviceList CAudioEndPointLibrary::GetPlaybackDevices(DefSound::EDeviceState state) const
     {
+        CAutoLock lock(&c_crit_sec);
         if(state == DefSound::All)
         {
             return m_container.m_playback;
@@ -156,6 +162,7 @@ namespace AudioEndPoint {
 
     AudioDeviceList CAudioEndPointLibrary::GetRecordingDevices(DefSound::EDeviceState state) const
     {
+        CAutoLock lock(&c_crit_sec);
         if (state == DefSound::All)
         {
             return m_container.m_recording;
@@ -177,6 +184,7 @@ namespace AudioEndPoint {
 
     void CAudioEndPointLibrary::Refresh()
     {
+        CAutoLock lock(&c_crit_sec);
         m_container.m_recording.clear();
         m_container.m_playback.clear();
 
