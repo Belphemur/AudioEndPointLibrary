@@ -30,7 +30,6 @@ THE SOFTWARE.
 #include "DefSoundEndpointRole.h"
 
 #include "PolicyConfig.h"
-
 #include <Functiondiscoverykeys_devpkey.h>
 #include "DefSoundIsDefaultEndpoint.h"
 
@@ -296,7 +295,7 @@ void CEndpointCollection::SetDefaultEndpoint(const CEndpoint& Endpoint, ::ERole 
 		SetDefaultEndpointOneRole(Endpoint.m_DeviceId.c_str(), itRole.m_RoleValue);
 }
 
-	// ----------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
 
 INT_PTR CEndpointCollection::SetDefaultNext(__in ERole Role) const
 {

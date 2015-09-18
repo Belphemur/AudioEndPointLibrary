@@ -1,6 +1,9 @@
 #pragma once
-#include "DefSoundEndpoint.h"
 #include "AudioDeviceType.h"
+#include <DefSoundEndpoint.h>
+#include <DefSoundEndpointRole.h>
+#include <mmdeviceapi.h>
+
 namespace AudioEndPoint {
 	class AUDIOENDPOINTLIBRARY_API AudioDevice
 	{
@@ -60,8 +63,8 @@ namespace AudioEndPoint {
 
 
 		
-		void SetDefault(ERole role);
-		bool IsDefault(ERole role);
+		void SetDefault(ERole role) const;
+		bool IsDefault(ERole role) const;
 		~AudioDevice();
 	};
 }

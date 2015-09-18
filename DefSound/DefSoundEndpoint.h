@@ -20,22 +20,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+
 #pragma once
-#include "mmdeviceapi.h"
+#include "DefSoundDeviceState.h"
+#include <array>
 
-namespace DefSound
-{
-	enum EDeviceState
+namespace DefSound {
+	struct CEndpoint
 	{
-		Active = DEVICE_STATE_ACTIVE,
-		Disabled = DEVICE_STATE_DISABLED,
-		NotPresent = DEVICE_STATE_NOTPRESENT,
-		Unplugged = DEVICE_STATE_UNPLUGGED,
-		All = DEVICE_STATEMASK_ALL
-	};
-
-	struct CDeviceStateContainer
-	{
-		EDeviceState state = All;
+		std::wstring m_DeviceId;
+		std::wstring m_DeviceDesc;
+		std::wstring m_DeviceClassIconPath;
+		std::wstring m_FriendlyName;
+		CDeviceStateContainer m_State;
+		std::array< bool, ERole_enum_count > m_IsDefault;
 	};
 }

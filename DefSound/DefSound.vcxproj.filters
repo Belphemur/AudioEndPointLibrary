@@ -24,31 +24,25 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AudioEndPointLibrary.h">
+    <ClInclude Include="DefSoundEndpointColl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ExportDll.h">
+    <ClInclude Include="DefSoundEndpointRole.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DefSoundError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DefSoundIsDefaultEndpoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PolicyConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AudioDevice.h">
+    <ClInclude Include="DefSoundDeviceState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioDeviceType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MMNotificationClient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioEndPointLibraryImpl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Signal.h">
+    <ClInclude Include="DefSoundEndpoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,22 +50,17 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AudioEndPointLibrary.cpp">
+    <ClCompile Include="DefSoundEndpointRole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="DefSoundError.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AudioDevice.cpp">
+    <ClCompile Include="DefSoundIsDefaultEndpoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MMNotificationClient.cpp">
+    <ClCompile Include="DefSoundEndpointColl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="AudioEndPointLibrary.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -28,14 +28,17 @@ THE SOFTWARE.
 #pragma once
 #include "DefSoundDeviceState.h"
 #include "DefSoundEndpoint.h"
+#include <vector>
+#include <memory>
 
 
 // ----------------------------------------------------------------------------
 
 namespace DefSound {
+    struct CEndpointRole;
 
 
-class CEndpointCollection
+    class CEndpointCollection
 {
 public:
 	CEndpointCollection(EDeviceState device_state = All, EDataFlow device_flow = ::eRender);

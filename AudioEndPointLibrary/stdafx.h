@@ -11,26 +11,9 @@
 // Windows Header Files:
 #include <windows.h>
 
-
-#ifdef  _DEBUG
-#define VERIFY(x)   _ASSERT(x)
-#else   // _DEBUG
-#define VERIFY(x)   (x)
-#endif  // _DEBUG
-
-#include <string>
-#include <MmDeviceApi.h>
-#include <vector>
-#include <memory>
-
-#pragma comment(lib, "comsuppw.lib")
-#include <comip.h>
-#include <comutil.h>
-
 #include <streams.h>
 #include <combase.h>
 #include <wxutil.h>
 
-#include "DefSoundError.h"
 #include "ExportDll.h"
 

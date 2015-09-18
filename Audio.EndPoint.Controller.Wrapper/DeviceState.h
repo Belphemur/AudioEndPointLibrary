@@ -1,5 +1,5 @@
 #pragma once
-#include "DefSoundDeviceState.h"
+#include <mmdeviceapi.h>
 using namespace System;
 namespace AudioEndPointControllerWrapper {
 	/*

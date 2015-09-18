@@ -3,8 +3,8 @@
 
 #include "stdafx.h"
 #include "AudioEndPointLibrary.h"
-#include "DefSoundEndpointColl.h"
 #include "MMNotificationClient.h"
+#include <DefSoundEndpointColl.h>
 #include <algorithm>
 
 namespace AudioEndPoint {
@@ -188,14 +188,14 @@ namespace AudioEndPoint {
         m_container.m_recording.clear();
         m_container.m_playback.clear();
 
-        auto playbackPtr = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(DefSound::All, ::eRender));
-        for (auto &endpoint : playbackPtr->Get())
+        auto playbackPtr = DefSound::CEndpointCollection(DefSound::CEndpointCollection(DefSound::All, ::eRender));
+        for (auto &endpoint : playbackPtr.Get())
         {
             m_container.m_playback.push_back(std::make_shared<AudioDevice>(endpoint, Playback));
         }
 
-        auto recordingPtr = std::make_unique<DefSound::CEndpointCollection>(DefSound::CEndpointCollection(DefSound::All, ::eCapture));
-        for (auto &endpoint : recordingPtr->Get())
+        auto recordingPtr = DefSound::CEndpointCollection(DefSound::CEndpointCollection(DefSound::All, ::eCapture));
+        for (auto &endpoint : recordingPtr.Get())
         {
             m_container.m_recording.push_back(std::make_shared<AudioDevice>(endpoint, Recording));
         }
