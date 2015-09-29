@@ -7,19 +7,16 @@ _COM_SMARTPTR_TYPEDEF(IMMDeviceEnumerator, __uuidof(IMMDeviceEnumerator));
 
 
 #define ReturnIfFailed(hr) if (FAILED(hr)) return hr;
+static IMMDeviceEnumeratorPtr pDeviceEnumerator;
 
 HRESULT RegisterMMNotificationClient(IMMNotificationClient* notif)
 {
-    IMMDeviceEnumeratorPtr pDeviceEnumerator;
     ReturnIfFailed(pDeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator)));
     return pDeviceEnumerator->RegisterEndpointNotificationCallback(notif);
-
 }
 
 HRESULT UnregisterMMNotificationClient(IMMNotificationClient* notif)
 {
-    IMMDeviceEnumeratorPtr pDeviceEnumerator;
-    ReturnIfFailed(pDeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator)));
     return pDeviceEnumerator->UnregisterEndpointNotificationCallback(notif);
 }
 
