@@ -15,7 +15,7 @@ namespace AudioEndPoint {
         AudioDeviceList GetPlaybackDevices(DefSound::EDeviceState state) const;
         AudioDeviceList GetRecordingDevices(DefSound::EDeviceState state) const;
         HRESULT RegisterNotificationClient();
-        HRESULT UnRegisterNotificationClient();
+        HRESULT UnRegisterNotificationClient() const;
 
 	    AudioEndPointLibrarySignals& m_signals1()
 	    {

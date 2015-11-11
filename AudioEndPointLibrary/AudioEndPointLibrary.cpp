@@ -15,10 +15,6 @@ namespace AudioEndPoint {
     CAudioEndPointLibrary::CAudioEndPointLibrary()
     {
         Refresh();
-        auto pNotifclient = new(std::nothrow) AudioEndPoint::CMMNotificationClient;
-        pNotifclient->NonDelegatingAddRef();
-        pNotifclient->NonDelegatingQueryInterface(IID_PPV_ARGS(&m_container.m_notif_client));
-        pNotifclient->NonDelegatingRelease();
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state)
@@ -179,13 +175,23 @@ namespace AudioEndPoint {
 
     HRESULT CAudioEndPointLibrary::RegisterNotificationClient()
     {
-        ReturnIfFailed(m_container.m_DeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator)));
-        return m_container.m_DeviceEnumerator->RegisterEndpointNotificationCallback(m_container.m_notif_client);
+        if (!m_container.m_notif_client) {
+            auto pNotifclient = new(std::nothrow) AudioEndPoint::CMMNotificationClient;
+            pNotifclient->NonDelegatingAddRef();
+            pNotifclient->NonDelegatingQueryInterface(IID_PPV_ARGS(&m_container.m_notif_client));
+            pNotifclient->NonDelegatingRelease();
+            ReturnIfFailed(m_container.m_DeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator)));
+            return m_container.m_DeviceEnumerator->RegisterEndpointNotificationCallback(m_container.m_notif_client);
+        }
+        return FALSE;
     }
 
-    HRESULT CAudioEndPointLibrary::UnRegisterNotificationClient()
+    HRESULT CAudioEndPointLibrary::UnRegisterNotificationClient() const
     {
-        return m_container.m_DeviceEnumerator->UnregisterEndpointNotificationCallback(m_container.m_notif_client);
+        if (m_container.m_notif_client) {
+            return m_container.m_DeviceEnumerator->UnregisterEndpointNotificationCallback(m_container.m_notif_client);
+        }
+        return FALSE;
     }
 
     void CAudioEndPointLibrary::Refresh()
