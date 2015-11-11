@@ -3,19 +3,44 @@
 #include "AudioEndPointLibrary.h"
 
 namespace AudioEndPoint {
-    CMMNotificationClient::CMMNotificationClient() : CUnknown("AudioEndPoint::MMNotificationClient", nullptr)
+    CMMNotificationClient::CMMNotificationClient() : m_refcount(1)
     {
     }
 
-
-    STDMETHODIMP CMMNotificationClient::NonDelegatingQueryInterface(REFIID riid, void** ppv)
+    STDMETHODIMP CMMNotificationClient::QueryInterface(const IID& riid, void** ppvInterface)
     {
-        if (riid == __uuidof(IMMNotificationClient))
-            return GetInterface(static_cast<IMMNotificationClient*>(this), ppv);
-
-        return CUnknown::NonDelegatingQueryInterface(riid, ppv);
+        if (IID_IUnknown == riid)
+        {
+            AddRef();
+            *ppvInterface = static_cast<IUnknown*>(this);
+        }
+        else if (__uuidof(IMMNotificationClient) == riid)
+        {
+            AddRef();
+            *ppvInterface = static_cast<IMMNotificationClient*>(this);
+        }
+        else
+        {
+            *ppvInterface = nullptr;
+            return E_NOINTERFACE;
+        }
+        return S_OK;
     }
 
+    STDMETHODIMP_(ULONG) CMMNotificationClient::AddRef()
+    {
+        return InterlockedIncrement(&m_refcount);
+    }
+
+    STDMETHODIMP_(ULONG) CMMNotificationClient::Release()
+    {
+        ULONG ulRef = InterlockedDecrement(&m_refcount);
+        if (0 == ulRef)
+        {
+            delete this;
+        }
+        return ulRef;
+    }
 
     STDMETHODIMP CMMNotificationClient::OnDeviceStateChanged(LPCWSTR pwstrDeviceId, DWORD dwNewState)
     {

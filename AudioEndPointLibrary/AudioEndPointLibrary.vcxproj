@@ -287,9 +287,6 @@
     <ProjectReference Include="..\DefSound\DefSound.vcxproj">
       <Project>{0ef580fe-b39d-4423-a59c-5b98ab6f39e7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\DSBaseClasses\DSBaseClasses.vcxproj">
-      <Project>{98c48c8b-9825-4a06-bf8a-e18818cda1e9}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
