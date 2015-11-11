@@ -74,12 +74,12 @@ namespace AudioEndPointControllerWrapper {
         return AudioController::GetRecordingDevices(DeviceState::All);
     }
 
-    Boolean ^ AudioController::IsNotificationAvailable()
+    bool AudioController::IsNotificationAvailable()
     {
 #ifndef APPVEYOR
-        return gcnew Boolean(wrapper.IsLoaded());
+        return wrapper.IsLoaded();
 #else
-        return gcnew Boolean(false);
+        return false;
 #endif
     }
 
