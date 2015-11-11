@@ -73,6 +73,16 @@ namespace AudioEndPointControllerWrapper {
     {
         return AudioController::GetRecordingDevices(DeviceState::All);
     }
+
+    Boolean ^ AudioController::IsNotificationAvailable()
+    {
+#ifndef APPVEYOR
+        return gcnew Boolean(wrapper.IsLoaded());
+#else
+        return gcnew Boolean(false);
+#endif
+    }
+
     void AudioController::RaiseAdded(DeviceAddedEvent ^ devEvent)
     {
         DeviceAdded(nullptr, devEvent);

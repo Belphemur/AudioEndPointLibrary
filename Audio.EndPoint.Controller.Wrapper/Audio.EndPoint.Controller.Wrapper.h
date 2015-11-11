@@ -25,6 +25,8 @@ namespace AudioEndPointControllerWrapper {
 		static List<IAudioDevice^>^ GetActiveRecordingDevices();
 		static List<IAudioDevice^>^ GetAllRecordingDevices();
 
+        static Boolean^ IsNotificationAvailable();
+
     internal:
         static void RaiseAdded(DeviceAddedEvent^ devEvent);
         static void RaiseRemoved(DeviceRemovedEvent^ devEvent);

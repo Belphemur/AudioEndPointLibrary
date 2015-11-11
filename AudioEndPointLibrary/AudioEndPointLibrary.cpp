@@ -177,9 +177,15 @@ namespace AudioEndPoint {
         return list;
     }
 
-    IMMNotificationClientPtr& CAudioEndPointLibrary::GetNotifClient()
+    HRESULT CAudioEndPointLibrary::RegisterNotificationClient()
     {
-        return m_container.m_notif_client;
+        ReturnIfFailed(m_container.m_DeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator)));
+        return m_container.m_DeviceEnumerator->RegisterEndpointNotificationCallback(m_container.m_notif_client);
+    }
+
+    HRESULT CAudioEndPointLibrary::UnRegisterNotificationClient()
+    {
+        return m_container.m_DeviceEnumerator->UnregisterEndpointNotificationCallback(m_container.m_notif_client);
     }
 
     void CAudioEndPointLibrary::Refresh()

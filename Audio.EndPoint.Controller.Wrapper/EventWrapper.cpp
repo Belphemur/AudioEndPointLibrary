@@ -29,6 +29,14 @@ namespace AudioEndPointControllerWrapper {
         {
             AudioController::RaiseState(gcnew DeviceStateChangedEvent(gcnew AudioDeviceWrapper(device), static_cast<DeviceState>(prev), static_cast<DeviceState>(cur)));
         });
+
+        try
+        {
+            m_loaded = SUCCEEDED(CAudioEndPointLibrary::GetInstance().RegisterNotificationClient());
+        } catch(...)
+        {
+            
+        }
     }
     EventWrapper::~EventWrapper()
     {
@@ -36,5 +44,16 @@ namespace AudioEndPointControllerWrapper {
         m_removed.m_signal->Unregister(m_removed);
         m_default.m_signal->Unregister(m_default);
         m_state.m_signal->Unregister(m_state);
+        if(m_loaded)
+        {
+            try
+            {
+                CAudioEndPointLibrary::GetInstance().UnRegisterNotificationClient();
+            }
+            catch (...)
+            {
+
+            }
+        }
     }
 }

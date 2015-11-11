@@ -12,6 +12,7 @@ namespace AudioEndPoint {
     typedef Signal<AudioDevicePtr, DefSound::EDeviceState, DefSound::EDeviceState> DeviceStateSignal;
     typedef Signal<AudioDevicePtr, ERole> DeviceDefaultSignal;
 
+    _COM_SMARTPTR_TYPEDEF(IMMDeviceEnumerator, __uuidof(IMMDeviceEnumerator));
     _COM_SMARTPTR_TYPEDEF(IMMNotificationClient, __uuidof(IMMNotificationClient));
 
     struct AudioEndPointLibraryImpl
@@ -19,6 +20,7 @@ namespace AudioEndPoint {
         AudioDeviceList m_playback;
         AudioDeviceList m_recording;
         IMMNotificationClientPtr m_notif_client;
+        IMMDeviceEnumeratorPtr m_DeviceEnumerator;
      
     };
 

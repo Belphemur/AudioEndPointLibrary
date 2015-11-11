@@ -14,8 +14,8 @@ namespace AudioEndPoint {
 	    static CAudioEndPointLibrary& GetInstance();
         AudioDeviceList GetPlaybackDevices(DefSound::EDeviceState state) const;
         AudioDeviceList GetRecordingDevices(DefSound::EDeviceState state) const;
-
-	    IMMNotificationClientPtr& GetNotifClient();
+        HRESULT RegisterNotificationClient();
+        HRESULT UnRegisterNotificationClient();
 
 	    AudioEndPointLibrarySignals& m_signals1()
 	    {
