@@ -60,11 +60,11 @@ namespace AudioEndPoint {
         AudioDeviceList list;
         if(flow == ::eRender)
         {
-            list = this->GetPlaybackDevices(DefSound::EDeviceState::All);
+            list = this->GetPlaybackDevices(DefSound::EDeviceState::Active);
         } 
         else if(flow == ::eCapture)
         {
-            list = this->GetRecordingDevices(DefSound::EDeviceState::All);
+            list = this->GetRecordingDevices(DefSound::EDeviceState::Active);
         } else
         {
             return S_FALSE;
@@ -130,7 +130,7 @@ namespace AudioEndPoint {
         auto collection = DefSound::CEndpointCollection(state, ::eCapture);
         for (auto &endpoint : collection.Get())
         {
-            list.push_back(std::make_unique<AudioDevice>(endpoint, Playback));
+            list.push_back(std::make_unique<AudioDevice>(endpoint, Recording));
         }
 
         return list;
