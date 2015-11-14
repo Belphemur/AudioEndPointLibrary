@@ -13,7 +13,6 @@ namespace AudioEndPoint {
     // see AudioEndPointLibrary.h for the class definition
     CAudioEndPointLibrary::CAudioEndPointLibrary()
     {
-        Refresh();
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state)
