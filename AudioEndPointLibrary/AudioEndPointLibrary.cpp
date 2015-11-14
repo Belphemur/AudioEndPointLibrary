@@ -6,10 +6,8 @@
 #include "MMNotificationClient.h"
 #include <DefSoundEndpointColl.h>
 #include <algorithm>
-#include <mutex>
 
 namespace AudioEndPoint {
-    static std::mutex mtx;
 
     // This is the constructor of a class that has been exported.
     // see AudioEndPointLibrary.h for the class definition
@@ -20,7 +18,6 @@ namespace AudioEndPoint {
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state)
     {
-        std::lock_guard<std::mutex> lck(mtx);
         auto audio_device = find_if(m_container.m_playback.begin(), m_container.m_playback.end(),[pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
@@ -48,7 +45,6 @@ namespace AudioEndPoint {
 
     HRESULT CAudioEndPointLibrary::OnDeviceRemoved(LPCWSTR pwstr_device_id)
     {
-        std::lock_guard<std::mutex> lck(mtx);
         auto audio_device = find_if(m_container.m_playback.begin(), m_container.m_playback.end(), [pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
@@ -73,7 +69,6 @@ namespace AudioEndPoint {
 
     HRESULT CAudioEndPointLibrary::OnDefaultDeviceChanged(EDataFlow flow, ERole role, LPCWSTR pwstr_default_device_id)
     {
-        std::lock_guard<std::mutex> lck(mtx);
         AudioDeviceList* list = nullptr;
         if(flow == ::eRender)
         {
@@ -106,7 +101,6 @@ namespace AudioEndPoint {
     HRESULT CAudioEndPointLibrary::OnDeviceAdded(LPCWSTR pwstr_device_id)
     {
         Refresh();
-        std::lock_guard<std::mutex> lck(mtx);
         auto audio_device = find_if(m_container.m_playback.begin(), m_container.m_playback.end(), [pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
         });
@@ -141,7 +135,6 @@ namespace AudioEndPoint {
 
     AudioDeviceList CAudioEndPointLibrary::GetPlaybackDevices(DefSound::EDeviceState state) const
     {
-        std::lock_guard<std::mutex> lck(mtx);
         if(state == DefSound::All)
         {
             return m_container.m_playback;
@@ -159,7 +152,6 @@ namespace AudioEndPoint {
 
     AudioDeviceList CAudioEndPointLibrary::GetRecordingDevices(DefSound::EDeviceState state) const
     {
-        std::lock_guard<std::mutex> lck(mtx);
         if (state == DefSound::All)
         {
             return m_container.m_recording;
@@ -203,7 +195,6 @@ namespace AudioEndPoint {
 
     void CAudioEndPointLibrary::Refresh()
     {
-        std::lock_guard<std::mutex> lck(mtx);
         m_container.m_recording.clear();
         m_container.m_playback.clear();
 
