@@ -23,7 +23,6 @@ namespace AudioEndPoint {
 	    }
 
 	    __declspec(property(get = m_signals1)) AudioEndPointLibrarySignals Signals;
-	    void Refresh();
     private:
         CAudioEndPointLibrary(void);
         CAudioEndPointLibrary(CAudioEndPointLibrary const&) = delete;

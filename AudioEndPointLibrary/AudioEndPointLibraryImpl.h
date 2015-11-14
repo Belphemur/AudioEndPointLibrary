@@ -17,11 +17,8 @@ namespace AudioEndPoint {
 
     struct AudioEndPointLibraryImpl
     {
-        AudioDeviceList m_playback;
-        AudioDeviceList m_recording;
-        IMMNotificationClientPtr m_notif_client;
         IMMDeviceEnumeratorPtr m_DeviceEnumerator;
-     
+        IMMNotificationClientPtr m_notif_client;     
     };
 
     struct AudioEndPointLibrarySignals
