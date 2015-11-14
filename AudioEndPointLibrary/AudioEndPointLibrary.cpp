@@ -13,7 +13,12 @@ namespace AudioEndPoint {
     // see AudioEndPointLibrary.h for the class definition
     CAudioEndPointLibrary::CAudioEndPointLibrary()
     {
-        return;
+        this->RegisterNotificationClient();
+    }
+
+    CAudioEndPointLibrary::~CAudioEndPointLibrary()
+    {
+        this->UnRegisterNotificationClient();
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state)
@@ -101,11 +106,6 @@ namespace AudioEndPoint {
         return S_OK;
     }
 
-    CAudioEndPointLibrary::~CAudioEndPointLibrary()
-    {
-       UnRegisterNotificationClient();
-    }
-
     CAudioEndPointLibrary& CAudioEndPointLibrary::GetInstance()
     {
         static CAudioEndPointLibrary instance;
@@ -138,17 +138,17 @@ namespace AudioEndPoint {
 
     HRESULT CAudioEndPointLibrary::RegisterNotificationClient()
     {
-        HRESULT Result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+        HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
         if(!m_container.m_DeviceEnumerator)
         {          
-            Result = m_container.m_DeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator));
-            ReturnIfFailed(Result);
+            hr = m_container.m_DeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator));
+            ReturnIfFailed(hr);
         }
 
         if (!m_container.m_notif_client) {
             m_container.m_notif_client = new CMMNotificationClient;            
-            Result = m_container.m_DeviceEnumerator->RegisterEndpointNotificationCallback(m_container.m_notif_client);
-            return Result;
+            hr = m_container.m_DeviceEnumerator->RegisterEndpointNotificationCallback(m_container.m_notif_client);
+            return hr;
         }
         return S_OK;
     }
@@ -156,11 +156,9 @@ namespace AudioEndPoint {
     HRESULT CAudioEndPointLibrary::UnRegisterNotificationClient() const
     {
         if (m_container.m_notif_client) {
-            HRESULT hr = m_container.m_DeviceEnumerator->UnregisterEndpointNotificationCallback(m_container.m_notif_client);
-            if(SUCCEEDED(hr))
-            {
-                m_container.m_notif_client->Release();
-            }
+            m_container.m_notif_client->Release();
+            HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+            hr = m_container.m_DeviceEnumerator->UnregisterEndpointNotificationCallback(m_container.m_notif_client);
             return hr;
         }
         return S_FALSE;
