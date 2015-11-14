@@ -10,8 +10,6 @@ using namespace AudioEndPoint;
 namespace AudioEndPointControllerWrapper {
     EventWrapper::EventWrapper()
     {
-        CAudioEndPointLibrary::GetInstance().Refresh();
-
         m_added = CAudioEndPointLibrary::GetInstance().Signals.DeviceAdded.Register([](AudioDevicePtr device)
         {
             AudioController::RaiseAdded(gcnew DeviceAddedEvent(gcnew AudioDeviceWrapper(device)));

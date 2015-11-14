@@ -13,6 +13,7 @@ namespace AudioEndPoint {
     // see AudioEndPointLibrary.h for the class definition
     CAudioEndPointLibrary::CAudioEndPointLibrary()
     {
+        Refresh();
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state)
@@ -197,14 +198,14 @@ namespace AudioEndPoint {
         m_container.m_recording.clear();
         m_container.m_playback.clear();
 
-        auto playbackPtr = DefSound::CEndpointCollection(DefSound::CEndpointCollection(DefSound::All, ::eRender));
-        for (auto &endpoint : playbackPtr.Get())
+        auto playback_collection = DefSound::CEndpointCollection(DefSound::All, ::eRender);
+        for (auto &endpoint : playback_collection.Get())
         {
             m_container.m_playback.push_back(std::make_shared<AudioDevice>(endpoint, Playback));
         }
 
-        auto recordingPtr = DefSound::CEndpointCollection(DefSound::CEndpointCollection(DefSound::All, ::eCapture));
-        for (auto &endpoint : recordingPtr.Get())
+        auto recording_collection = DefSound::CEndpointCollection(DefSound::All, ::eCapture);
+        for (auto &endpoint : recording_collection.Get())
         {
             m_container.m_recording.push_back(std::make_shared<AudioDevice>(endpoint, Recording));
         }
