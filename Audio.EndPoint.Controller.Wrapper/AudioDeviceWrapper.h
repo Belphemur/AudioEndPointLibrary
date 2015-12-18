@@ -10,7 +10,7 @@ namespace AudioEndPointControllerWrapper {
 	private:
 	    SharedNativePtr<AudioDevice> _audioDevice;
 	public:
-		AudioDeviceWrapper(std::shared_ptr<AudioDevice> device)
+		AudioDeviceWrapper(AudioEndPoint::AudioDevicePtr device)
 		{
             _audioDevice.Reset(device);
 		}

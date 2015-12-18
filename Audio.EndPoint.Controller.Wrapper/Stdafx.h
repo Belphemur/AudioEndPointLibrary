@@ -30,6 +30,7 @@
 #include "IAudioDevice.h"
 #include "SharedNativePtr.h"
 #include "AudioDevice.h"
+#include "AudioEndPointLibraryImpl.h"
 #include <DefSoundError.h>
 #include <list>
 
