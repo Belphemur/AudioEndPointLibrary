@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <functional>
 #include <list>
+#include "Autolock.h"
 
 namespace AudioEndPoint
 {
@@ -20,7 +21,7 @@ namespace AudioEndPoint
 
         Signal()
         {
-            
+            !InitializeCriticalSectionAndSpinCount(&this->_section, 0x00000400);
         }
 
         ~Signal()
@@ -32,7 +33,7 @@ namespace AudioEndPoint
         FunctionInfo Register(Observer&& observer)
         {
 
-
+            CAutolock(&this->_section);
             FunctionInfo info;
             info.m_signal = this;
             info.m_function = std::forward<Observer>(observer);
@@ -46,7 +47,7 @@ namespace AudioEndPoint
 
         void Notify(Args ... Params)
         {
-
+            CAutolock(&this->_section);
             if (m_observers.size() > 0)
             {
                 for (const auto& function : m_observers)
@@ -59,7 +60,7 @@ namespace AudioEndPoint
 
         void Unregister(FunctionInfo functionInfo)
         {
-
+            CAutolock(&this->_section);
             m_observers.remove_if([&functionInfo](FunctionInfo function)
                 {
                     return functionInfo.m_id == function.m_id;
@@ -71,5 +72,6 @@ namespace AudioEndPoint
         Signal(const Signal&) = delete;
         Signal& operator=(const Signal&) = delete;
         std::list<FunctionInfo> m_observers;
+        CRITICAL_SECTION _section;
     };
 }
