@@ -6,7 +6,10 @@
 #include "Signal.h"
 
 namespace AudioEndPoint {
+    EXPIMP_TEMPLATE class AUDIOENDPOINTLIBRARY_API  std::mutex;
+    EXPIMP_TEMPLATE template class AUDIOENDPOINTLIBRARY_API  std::shared_ptr<AudioDevice>;
     typedef std::shared_ptr<AudioDevice> AudioDevicePtr;
+    EXPIMP_TEMPLATE template class AUDIOENDPOINTLIBRARY_API std::list<AudioDevicePtr>;
     typedef std::list<AudioDevicePtr> AudioDeviceList;
     typedef Signal<AudioDevicePtr> DeviceSignal;
     typedef Signal<AudioDevicePtr, DefSound::EDeviceState, DefSound::EDeviceState> DeviceStateSignal;
@@ -19,6 +22,14 @@ namespace AudioEndPoint {
     {
         IMMDeviceEnumeratorPtr m_DeviceEnumerator;
         IMMNotificationClientPtr m_notif_client;     
+    };
+
+    struct AUDIOENDPOINTLIBRARY_API AudioEndPointLibraryDevicesImpl
+    {
+        AudioDeviceList m_playback;
+        AudioDeviceList m_recording;
+        bool m_need_update = true;
+        std::mutex m_lists_mutex;
     };
 
     struct AudioEndPointLibrarySignals

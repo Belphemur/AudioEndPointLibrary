@@ -239,7 +239,6 @@
     <ClInclude Include="AudioEndPointLibraryImpl.h" />
     <ClInclude Include="AudioDeviceType.h" />
     <ClInclude Include="AudioEndPointLibrary.h" />
-    <ClInclude Include="Autolock.h" />
     <ClInclude Include="ExportDll.h" />
     <ClInclude Include="MMNotificationClient.h" />
     <ClInclude Include="PolicyConfig.h" />

@@ -51,9 +51,6 @@
     <ClInclude Include="Signal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Autolock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

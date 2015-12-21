@@ -7,6 +7,8 @@
 // defined with this macro as being exported.
 #ifdef AUDIOENDPOINTLIBRARY_EXPORTS
 #define AUDIOENDPOINTLIBRARY_API __declspec(dllexport)
+#define EXPIMP_TEMPLATE
 #else
 #define AUDIOENDPOINTLIBRARY_API __declspec(dllimport)
+#define EXPIMP_TEMPLATE extern
 #endif
