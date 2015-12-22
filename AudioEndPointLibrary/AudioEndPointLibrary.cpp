@@ -93,19 +93,26 @@ namespace AudioEndPoint {
         {
             return S_FALSE;
         }
-        auto audio_device = find_if(list.begin(), list.end(), [pwstr_default_device_id](AudioDevicePtr device) {
-            return wcscmp(device->ID, pwstr_default_device_id) == 0;
-        });
 
-        if (audio_device != list.end())
+        AudioDevicePtr deviceFound = nullptr;
+        for (auto& device : list)
         {
-            Signals->DeviceDefaultChanged.Notify((*audio_device), role);
+            if (wcscmp(device->ID, pwstr_default_device_id) == 0)
+            {
+                device->GetEndPoint().m_IsDefault[role] = true;
+                deviceFound = device;
+            }
+            else
+            {
+                device->GetEndPoint().m_IsDefault[role] = false;
+            }
         }
+        Signals->DeviceDefaultChanged.Notify(deviceFound, role);
         
         return S_OK;
     }
 
-    HRESULT CAudioEndPointLibrary::OnDeviceAdded(LPCWSTR pwstr_device_id)
+    HRESULT CAudioEndPointLibrary::OnDeviceAdded(LPCWSTR pwstr_device_id) const
     {
         m_devices_lists->m_need_update = true;
         auto m_playback = this->GetPlaybackDevices(DefSound::EDeviceState::All);

@@ -10,7 +10,7 @@ namespace AudioEndPoint {
     public:
         ~CAudioEndPointLibrary();
         HRESULT OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state) const;
-        HRESULT OnDeviceAdded(LPCWSTR pwstr_device_id);
+        HRESULT OnDeviceAdded(LPCWSTR pwstr_device_id) const;
         HRESULT OnDeviceRemoved(LPCWSTR pwstr_device_id) const;
         HRESULT OnDefaultDeviceChanged(EDataFlow flow, ERole role, LPCWSTR pwstr_default_device_id) const;
         static CAudioEndPointLibrary& GetInstance();
