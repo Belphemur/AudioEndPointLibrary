@@ -19,27 +19,27 @@ namespace AudioEndPoint {
 		{
 		}
 
-		LPCWSTR GetFriendlyName()
+		LPCWSTR GetFriendlyName() const
 		{
 			return endpoint.m_FriendlyName.c_str();
 		}
 
-		LPCWSTR GetDescription()
+		LPCWSTR GetDescription() const
 		{
 			return endpoint.m_DeviceDesc.c_str();
 		}
 
-		LPCWSTR GetID()
+		LPCWSTR GetID() const
 		{
 			return endpoint.m_DeviceId.c_str();
 		}
 
-		LPCWSTR GetDeviceClassIconPath()
+		LPCWSTR GetDeviceClassIconPath() const
 		{
 			return endpoint.m_DeviceClassIconPath.c_str();
 		}
 
-		DefSound::EDeviceState GetDeviceState()
+		DefSound::EDeviceState GetDeviceState() const
 		{
 			return endpoint.m_State.state;
 		}

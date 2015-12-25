@@ -219,9 +219,8 @@ namespace AudioEndPoint {
     }
 
     void CAudioEndPointLibrary::Refresh() const
-    {
+    {   
         std::lock_guard<std::mutex> lock(m_devices_lists->m_lists_mutex);
-        m_devices_lists->m_need_update = false;
 
         m_devices_lists->m_playback.clear();
         auto collectionPlayback = DefSound::CEndpointCollection(DefSound::All, ::eRender);
@@ -236,5 +235,6 @@ namespace AudioEndPoint {
         {
             m_devices_lists->m_recording.push_back(std::make_shared<AudioDevice>(endpoint, Recording));
         }
+        m_devices_lists->m_need_update = false;
     }
 }
