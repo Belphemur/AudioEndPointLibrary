@@ -84,11 +84,11 @@ namespace AudioEndPoint {
         AudioDeviceList list;
         if(flow == ::eRender)
         {
-            list = this->GetPlaybackDevices(DefSound::EDeviceState::Active);
+            list = this->GetPlaybackDevices(DefSound::EDeviceState::All);
         } 
         else if(flow == ::eCapture)
         {
-            list = this->GetRecordingDevices(DefSound::EDeviceState::Active);
+            list = this->GetRecordingDevices(DefSound::EDeviceState::All);
         } else
         {
             return S_FALSE;
