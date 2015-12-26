@@ -246,7 +246,7 @@ CEndpointCollection::CEndpointCollection(EDeviceState device_state, EDataFlow de
 void CEndpointCollection::Refresh()
 {
     CDeviceEnumeratorPtr pDeviceEnumerator;
-	HRESULT Result = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+	HRESULT Result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 	Result = pDeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator));
     if (FAILED(Result))
         throw CError( L"Create instance of MMDeviceEnumerator failed", Result );
@@ -254,8 +254,16 @@ void CEndpointCollection::Refresh()
     CEndpointCollection::CImpl Impl;
     EnumerateEndpoints(pDeviceEnumerator, m_device_state, m_device_type, Impl);
 
-    for (const auto &EndpointRole : GetEndpointRoleArray())
-        MarkDefaultAudioEndpoint(pDeviceEnumerator, EndpointRole.m_RoleValue, m_device_type, Impl);
+    for (const auto &EndpointRole : GetEndpointRoleArray()) {
+        try
+        {
+            MarkDefaultAudioEndpoint(pDeviceEnumerator, EndpointRole.m_RoleValue, m_device_type, Impl);
+        }
+        catch (...)
+        {
+            printf("Can't get default device role %ls", EndpointRole.m_wszFullName);
+        }       
+    }
 
     m_pImpl.reset( new CEndpointCollection::CImpl(std::move(Impl)) );
 }
