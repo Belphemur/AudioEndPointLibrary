@@ -49,7 +49,7 @@ namespace AudioEndPoint {
         auto m_playback = this->GetPlaybackDevices(DefSound::EDeviceState::All);
         auto m_recording = this->GetRecordingDevices(DefSound::EDeviceState::All);
         auto audio_device = find_if(m_playback.begin(), m_playback.end(),[pwstr_device_id](AudioDevicePtr device) {
-            return wcscmp(device->ID, pwstr_device_id) == 0;
+            return pwstr_device_id != nullptr && wcscmp(device->ID, pwstr_device_id) == 0;
         });
 
         auto e_device_state = static_cast<DefSound::EDeviceState>(dw_new_state);
@@ -61,7 +61,7 @@ namespace AudioEndPoint {
         }
 
         audio_device = find_if(m_recording.begin(), m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
-            return wcscmp(device->ID, pwstr_device_id) == 0;
+            return pwstr_device_id != nullptr && wcscmp(device->ID, pwstr_device_id) == 0;
         });
 
         if (audio_device != m_recording.end())
@@ -97,7 +97,7 @@ namespace AudioEndPoint {
         AudioDevicePtr deviceFound = nullptr;
         for (auto& device : list)
         {
-            if (wcscmp(device->ID, pwstr_default_device_id) == 0)
+            if (pwstr_default_device_id != nullptr && wcscmp(device->ID, pwstr_default_device_id) == 0)
             {
                 device->GetEndPoint().m_IsDefault[role] = true;
                 deviceFound = device;
@@ -107,7 +107,10 @@ namespace AudioEndPoint {
                 device->GetEndPoint().m_IsDefault[role] = false;
             }
         }
-        Signals->DeviceDefaultChanged.Notify(deviceFound, role);
+
+        if (deviceFound != nullptr) {
+            Signals->DeviceDefaultChanged.Notify(deviceFound, role);
+        }
         
         return S_OK;
     }
@@ -118,7 +121,7 @@ namespace AudioEndPoint {
         auto m_playback = this->GetPlaybackDevices(DefSound::EDeviceState::All);
         auto m_recording = this->GetRecordingDevices(DefSound::EDeviceState::All);
         auto audio_device = find_if(m_playback.begin(), m_playback.end(), [pwstr_device_id](AudioDevicePtr device) {
-            return wcscmp(device->ID, pwstr_device_id) == 0;
+            return pwstr_device_id != nullptr && wcscmp(device->ID, pwstr_device_id) == 0;
         });
 
         if (audio_device != m_playback.end())
@@ -127,7 +130,7 @@ namespace AudioEndPoint {
         }
 
         audio_device = find_if(m_recording.begin(), m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
-            return wcscmp(device->ID, pwstr_device_id) == 0;
+            return pwstr_device_id != nullptr && wcscmp(device->ID, pwstr_device_id) == 0;
         });
 
         if (audio_device != m_recording.end())
