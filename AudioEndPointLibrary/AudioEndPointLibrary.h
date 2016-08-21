@@ -16,6 +16,9 @@ namespace AudioEndPoint {
         static CAudioEndPointLibrary& GetInstance();
         AudioDeviceList GetPlaybackDevices(DefSound::EDeviceState state) const;
         AudioDeviceList GetRecordingDevices(DefSound::EDeviceState state) const;
+        AudioDevicePtr GetAudioDevice(LPCWSTR id) const;
+        HRESULT RegisterNotificationClient() const;
+        HRESULT UnRegisterNotificationClient() const;
 
         AudioEndPointLibrarySignals* m_signals1() const
         {
@@ -28,16 +31,11 @@ namespace AudioEndPoint {
         CAudioEndPointLibrary(void);
         CAudioEndPointLibrary(CAudioEndPointLibrary const&) = delete;
         void operator=(CAudioEndPointLibrary const&) = delete;
-        void Refresh() const;
-        HRESULT RegisterNotificationClient() const;
-        HRESULT UnRegisterNotificationClient() const;
 
         struct AudioEndPointLibraryImpl;
-        struct AudioEndPointLibraryDevicesImpl;
 
         AudioEndPointLibraryImpl* m_container;
         AudioEndPointLibrarySignals* m_signals;
-        AudioEndPointLibraryDevicesImpl* m_devices_lists;
     };
 
 

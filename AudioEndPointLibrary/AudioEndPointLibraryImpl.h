@@ -9,7 +9,7 @@ namespace AudioEndPoint {
     typedef std::shared_ptr<AudioDevice> AudioDevicePtr;
     typedef std::list<AudioDevicePtr> AudioDeviceList;
     typedef Signal<AudioDevicePtr> DeviceSignal;
-    typedef Signal<AudioDevicePtr, DefSound::EDeviceState, DefSound::EDeviceState> DeviceStateSignal;
+    typedef Signal<AudioDevicePtr, DefSound::EDeviceState> DeviceStateSignal;
     typedef Signal<AudioDevicePtr, ERole> DeviceDefaultSignal;
 
     _COM_SMARTPTR_TYPEDEF(IMMDeviceEnumerator, __uuidof(IMMDeviceEnumerator));

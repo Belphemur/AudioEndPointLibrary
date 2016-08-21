@@ -27,9 +27,9 @@ namespace AudioEndPointControllerWrapper {
                 AudioController::RaiseDefault(gcnew DeviceDefaultChangedEvent(gcnew AudioDeviceWrapper(device), static_cast<Role>(role)));
             });
 
-            m_state = CAudioEndPointLibrary::GetInstance().Signals->DeviceStateChanged.Register([](AudioDevicePtr device, DefSound::EDeviceState prev, DefSound::EDeviceState cur)
+            m_state = CAudioEndPointLibrary::GetInstance().Signals->DeviceStateChanged.Register([](AudioDevicePtr device, DefSound::EDeviceState cur)
             {
-                AudioController::RaiseState(gcnew DeviceStateChangedEvent(gcnew AudioDeviceWrapper(device), static_cast<DeviceState>(prev), static_cast<DeviceState>(cur)));
+               AudioController::RaiseState(gcnew DeviceStateChangedEvent(gcnew AudioDeviceWrapper(device), static_cast<DeviceState>(cur)));
             });
             m_loaded = true;
         } catch(...)
@@ -43,5 +43,16 @@ namespace AudioEndPointControllerWrapper {
         m_removed.m_signal->Unregister(m_removed);
         m_default.m_signal->Unregister(m_default);
         m_state.m_signal->Unregister(m_state);
+        if(m_loaded)
+        {
+            try
+            {
+                CAudioEndPointLibrary::GetInstance().UnRegisterNotificationClient();
+            }
+            catch (...)
+            {
+
+            }
+        }
     }
 }

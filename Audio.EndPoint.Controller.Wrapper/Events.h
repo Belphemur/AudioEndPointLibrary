@@ -26,8 +26,7 @@ namespace AudioEndPointControllerWrapper {
     public ref class DeviceStateChangedEvent : public DeviceEvent
     {
     public:
-        DeviceStateChangedEvent(IAudioDevice^ dev, DeviceState prev, DeviceState newS) : DeviceEvent(dev), previousState(prev), newState(newS) {}
-        DeviceState previousState;
+        DeviceStateChangedEvent(IAudioDevice^ dev, DeviceState newS) : DeviceEvent(dev), newState(newS) {}
         DeviceState newState;
     };
 
