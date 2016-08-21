@@ -16,22 +16,12 @@ namespace AudioEndPoint {
         IMMNotificationClientPtr m_notif_client;
     };
 
-    struct CAudioEndPointLibrary::AudioEndPointLibraryDevicesImpl
-    {
-        AudioDeviceList m_playback;
-        AudioDeviceList m_recording;
-        bool m_need_update = true;
-        std::mutex m_lists_mutex;
-    };
-
 
     // This is the constructor of a class that has been exported.
     // see AudioEndPointLibrary.h for the class definition
     CAudioEndPointLibrary::CAudioEndPointLibrary() : m_container(new AudioEndPointLibraryImpl()), 
-        m_signals(new AudioEndPointLibrarySignals()), 
-        m_devices_lists(new AudioEndPointLibraryDevicesImpl())
+        m_signals(new AudioEndPointLibrarySignals())
     {
-        m_devices_lists->m_need_update = true;
         this->RegisterNotificationClient();
     }
 
@@ -39,102 +29,41 @@ namespace AudioEndPoint {
     CAudioEndPointLibrary::~CAudioEndPointLibrary()
     {
         delete m_signals;
-        delete m_devices_lists;
         this->UnRegisterNotificationClient();
         delete m_container;
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state) const
     {
-        auto m_playback = this->GetPlaybackDevices(DefSound::EDeviceState::All);
-        auto m_recording = this->GetRecordingDevices(DefSound::EDeviceState::All);
-        auto audio_device = find_if(m_playback.begin(), m_playback.end(),[pwstr_device_id](AudioDevicePtr device) {
-            return wcscmp(device->ID, pwstr_device_id) == 0;
-        });
-
+        auto device = this->GetAudioDevice(pwstr_device_id);
         auto e_device_state = static_cast<DefSound::EDeviceState>(dw_new_state);
-        if(audio_device != m_playback.end())
-        {
-            auto prevState = (*audio_device)->GetEndPoint().m_State.state;
-            (*audio_device)->GetEndPoint().m_State.state = e_device_state;
-            Signals->DeviceStateChanged.Notify((*audio_device), prevState, e_device_state);
-        }
-
-        audio_device = find_if(m_recording.begin(), m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
-            return wcscmp(device->ID, pwstr_device_id) == 0;
-        });
-
-        if (audio_device != m_recording.end())
-        {
-            auto prevState = (*audio_device)->GetEndPoint().m_State.state;
-            (*audio_device)->GetEndPoint().m_State.state = e_device_state;
-            Signals->DeviceStateChanged.Notify((*audio_device), prevState, e_device_state);
+        if (device != nullptr) {
+            Signals->DeviceStateChanged.Notify(device, e_device_state);
         }
         return S_OK;
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceRemoved(LPCWSTR pwstr_device_id) const
     {
-        m_devices_lists->m_need_update = true;
         return S_OK;
     }
 
     HRESULT CAudioEndPointLibrary::OnDefaultDeviceChanged(EDataFlow flow, ERole role, LPCWSTR pwstr_default_device_id) const
     {
-        AudioDeviceList list;
-        if(flow == ::eRender)
-        {
-            list = this->GetPlaybackDevices(DefSound::EDeviceState::Active);
-        } 
-        else if(flow == ::eCapture)
-        {
-            list = this->GetRecordingDevices(DefSound::EDeviceState::Active);
-        } else
-        {
-            return S_FALSE;
-        }
-
-        AudioDevicePtr deviceFound = nullptr;
-        for (auto& device : list)
-        {
-            if (wcscmp(device->ID, pwstr_default_device_id) == 0)
-            {
-                device->GetEndPoint().m_IsDefault[role] = true;
-                deviceFound = device;
-            }
-            else
-            {
-                device->GetEndPoint().m_IsDefault[role] = false;
-            }
-        }
-        Signals->DeviceDefaultChanged.Notify(deviceFound, role);
+        auto device = this->GetAudioDevice(pwstr_default_device_id);
+        if (device != nullptr) {
+            Signals->DeviceDefaultChanged.Notify(device, role);
+        }     
         
         return S_OK;
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceAdded(LPCWSTR pwstr_device_id) const
     {
-        m_devices_lists->m_need_update = true;
-        auto m_playback = this->GetPlaybackDevices(DefSound::EDeviceState::All);
-        auto m_recording = this->GetRecordingDevices(DefSound::EDeviceState::All);
-        auto audio_device = find_if(m_playback.begin(), m_playback.end(), [pwstr_device_id](AudioDevicePtr device) {
-            return wcscmp(device->ID, pwstr_device_id) == 0;
-        });
-
-        if (audio_device != m_playback.end())
-        {
-            Signals->DeviceAdded.Notify(*audio_device);
+        auto device = this->GetAudioDevice(pwstr_device_id);
+        if (device != nullptr) {
+            Signals->DeviceAdded.Notify(device);
         }
-
-        audio_device = find_if(m_recording.begin(), m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
-            return wcscmp(device->ID, pwstr_device_id) == 0;
-        });
-
-        if (audio_device != m_recording.end())
-        {
-            Signals->DeviceAdded.Notify(*audio_device);
-        }
-
         return S_OK;
     }
 
@@ -146,48 +75,50 @@ namespace AudioEndPoint {
 
     AudioDeviceList CAudioEndPointLibrary::GetPlaybackDevices(DefSound::EDeviceState state) const
     {
-        if(m_devices_lists->m_need_update)
+        AudioDeviceList playbackList;
+        auto collectionPlayback = DefSound::CEndpointCollection(state, ::eRender);
+        for (auto &endpoint : collectionPlayback.Get())
         {
-            Refresh();
+            playbackList.push_back(std::make_shared<AudioDevice>(endpoint, Playback));
         }
-
-        if(state == DefSound::EDeviceState::All)
-        {
-            return m_devices_lists->m_playback;
-        }
-        std::lock_guard<std::mutex> lock(m_devices_lists->m_lists_mutex);
-        AudioDeviceList list;
-        for (auto &endpoint : m_devices_lists->m_playback)
-        {
-            if (endpoint->GetDeviceState() == state)
-                list.push_back(endpoint);
-        }
-
-        return list;
-
-     
+        return playbackList;     
     }
 
     AudioDeviceList CAudioEndPointLibrary::GetRecordingDevices(DefSound::EDeviceState state) const
     {
-        if (m_devices_lists->m_need_update)
+        AudioDeviceList recordList;
+        auto collectionRecording = DefSound::CEndpointCollection(state, ::eCapture);
+        for (auto &endpoint : collectionRecording.Get())
         {
-            Refresh();
+            recordList.push_back(std::make_shared<AudioDevice>(endpoint, Recording));
+        }
+        return recordList;
+    }
+
+    AudioDevicePtr CAudioEndPointLibrary::GetAudioDevice(LPCWSTR pwstr_device_id) const
+    {
+        auto m_playback = this->GetPlaybackDevices(DefSound::EDeviceState::All);      
+        auto audio_device = std::find_if(m_playback.begin(), m_playback.end(), [pwstr_device_id](AudioDevicePtr device) {
+            return wcscmp(device->ID, pwstr_device_id) == 0;
+        });
+
+        if (audio_device != m_playback.end())
+        {
+            return *audio_device;
         }
 
-        if (state == DefSound::EDeviceState::All)
+        auto m_recording = this->GetRecordingDevices(DefSound::EDeviceState::All);
+        audio_device = std::find_if(m_recording.begin(), m_recording.end(), [pwstr_device_id](AudioDevicePtr device) {
+            return wcscmp(device->ID, pwstr_device_id) == 0;
+        });
+
+        if (audio_device != m_recording.end())
         {
-            return m_devices_lists->m_recording;
-        }
-        std::lock_guard<std::mutex> lock(m_devices_lists->m_lists_mutex);
-        AudioDeviceList list;
-        for (auto &endpoint : m_devices_lists->m_recording)
-        {
-            if (endpoint->GetDeviceState() == state)
-                list.push_back(endpoint);
+            return *audio_device;
         }
 
-        return list;
+        return nullptr;
+
     }
 
     HRESULT CAudioEndPointLibrary::RegisterNotificationClient() const
@@ -216,25 +147,5 @@ namespace AudioEndPoint {
             return hr;
         }
         return S_FALSE;
-    }
-
-    void CAudioEndPointLibrary::Refresh() const
-    {
-        std::lock_guard<std::mutex> lock(m_devices_lists->m_lists_mutex);
-        m_devices_lists->m_need_update = false;
-
-        m_devices_lists->m_playback.clear();
-        auto collectionPlayback = DefSound::CEndpointCollection(DefSound::All, ::eRender);
-        for (auto &endpoint : collectionPlayback.Get())
-        {
-            m_devices_lists->m_playback.push_back(std::make_shared<AudioDevice>(endpoint, Playback));
-        }
-
-        m_devices_lists->m_recording.clear();
-        auto collectionRecording = DefSound::CEndpointCollection(DefSound::All, ::eCapture);
-        for (auto &endpoint : collectionRecording.Get())
-        {
-            m_devices_lists->m_recording.push_back(std::make_shared<AudioDevice>(endpoint, Recording));
-        }
     }
 }

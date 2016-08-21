@@ -25,9 +25,9 @@ namespace AudioEndPointControllerWrapper {
             AudioController::RaiseDefault(gcnew DeviceDefaultChangedEvent(gcnew AudioDeviceWrapper(device), static_cast<Role>(role)));
         });
 
-        m_state = CAudioEndPointLibrary::GetInstance().Signals->DeviceStateChanged.Register([](AudioDevicePtr device, DefSound::EDeviceState prev, DefSound::EDeviceState cur)
+        m_state = CAudioEndPointLibrary::GetInstance().Signals->DeviceStateChanged.Register([](AudioDevicePtr device, DefSound::EDeviceState cur)
         {
-            AudioController::RaiseState(gcnew DeviceStateChangedEvent(gcnew AudioDeviceWrapper(device), static_cast<DeviceState>(prev), static_cast<DeviceState>(cur)));
+            AudioController::RaiseState(gcnew DeviceStateChangedEvent(gcnew AudioDeviceWrapper(device), static_cast<DeviceState>(cur)));
         });
 
         try
