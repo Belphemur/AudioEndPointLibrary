@@ -5,6 +5,10 @@
 
 void AudioEndPoint::AudioDevice::SetDefault(ERole role) const
 {
+    if (this->IsDefault(role)) {
+        return;
+    }
+
 	DefSound::CEndpointCollection::SetDefaultEndpoint(endpoint, role);
 }
 
