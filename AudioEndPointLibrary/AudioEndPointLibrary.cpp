@@ -46,6 +46,12 @@ namespace AudioEndPoint {
 
     HRESULT CAudioEndPointLibrary::OnDeviceRemoved(LPCWSTR pwstr_device_id) const
     {
+        DefSound::CEndpoint endpoint;
+        std::unique_ptr < LPCWSTR, decltype(&::CoTaskMemFree) > DeviceIdHolder(&pwstr_device_id, &::CoTaskMemFree);
+        endpoint.m_DeviceId = pwstr_device_id;
+        Signals->DeviceRemoved.Notify(std::make_shared<AudioDevice>(endpoint, Playback));
+        Signals->DeviceRemoved.Notify(std::make_shared<AudioDevice>(endpoint, Recording));
+
         return S_OK;
     }
 
@@ -99,6 +105,10 @@ namespace AudioEndPoint {
 
     AudioDevicePtr CAudioEndPointLibrary::GetAudioDevice(LPCWSTR pwstr_device_id) const
     {
+        if (pwstr_device_id == nullptr) {
+            return nullptr;
+        }
+
         auto m_playback = this->GetPlaybackDevices(DefSound::EDeviceState::All);      
         auto audio_device = std::find_if(m_playback.begin(), m_playback.end(), [pwstr_device_id](AudioDevicePtr device) {
             return wcscmp(device->ID, pwstr_device_id) == 0;
