@@ -31,7 +31,7 @@ namespace AudioEndPoint {
     {
         delete m_signals;
         this->UnRegisterNotificationClient();
-        delete m_container;
+        //delete m_container;
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state) const
