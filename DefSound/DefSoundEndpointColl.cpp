@@ -125,11 +125,18 @@ void EnumerateEndpoints(
             throw CError( MakeDefaultErrorDescription(L"IMMDevice::OpenPropertyStore"), Result );
 
         CPropVariant DeviceDesc;
-        Result = pPropertyStore->GetValue(PKEY_Device_DeviceDesc, &DeviceDesc.Get());
-        if (FAILED(Result))
-            throw CError( MakeDefaultErrorDescription(L"IPropertyStore::GetValue", L"(PKEY_Device_DeviceDesc, ...)"), Result );
-        if (DeviceDesc.Get().vt != VT_LPWSTR)
-            throw CError( L"Unexpected type of value `PKEY_Device_DeviceDesc'", ERROR_SUCCESS );
+        try
+        {
+            Result = pPropertyStore->GetValue(PKEY_Device_DeviceDesc, &DeviceDesc.Get());
+            if (FAILED(Result))
+                throw CError( MakeDefaultErrorDescription(L"IPropertyStore::GetValue", L"(PKEY_Device_DeviceDesc, ...)"), Result );
+            if (DeviceDesc.Get().vt != VT_LPWSTR)
+                throw CError( L"Unexpected type of value `PKEY_Device_DeviceDesc'", ERROR_SUCCESS );
+        }
+        catch (CError)
+        {
+            DeviceDesc.Get().pwszVal = L"";
+        }
 
 		CPropVariant FriendlyName;
 	    try
@@ -146,11 +153,19 @@ void EnumerateEndpoints(
 	    }	
 
         CPropVariant DeviceClassIconPath;
-        Result = pPropertyStore->GetValue(PKEY_DeviceClass_IconPath, &DeviceClassIconPath.Get());
-        if (FAILED(Result))
-            throw CError( MakeDefaultErrorDescription(L"IPropertyStore::GetValue", L"(PKEY_DeviceClass_IconPath, ...)"), Result );
-        if (DeviceClassIconPath.Get().vt != VT_LPWSTR)
-            throw CError( L"Unexpected type of value `PKEY_DeviceClass_IconPath'", ERROR_SUCCESS );
+        try
+        {
+            Result = pPropertyStore->GetValue(PKEY_DeviceClass_IconPath, &DeviceClassIconPath.Get());
+            if (FAILED(Result))
+                throw CError(MakeDefaultErrorDescription(L"IPropertyStore::GetValue", L"(PKEY_DeviceClass_IconPath, ...)"), Result);
+            if (DeviceClassIconPath.Get().vt != VT_LPWSTR)
+                throw CError(L"Unexpected type of value `PKEY_DeviceClass_IconPath'", ERROR_SUCCESS);
+        }
+        catch (CError)
+        {
+            DeviceClassIconPath.Get().pwszVal = L"%windir%\system32\mmres.dll,-3010";
+        }
+        
 
 
         CEndpoint &Endpoint = EndpointCollectionImpl.at(i);
