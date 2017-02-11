@@ -43,16 +43,6 @@ namespace AudioEndPointControllerWrapper {
         m_removed.m_signal->Unregister(m_removed);
         m_default.m_signal->Unregister(m_default);
         m_state.m_signal->Unregister(m_state);
-        if(m_loaded)
-        {
-            try
-            {
-                CAudioEndPointLibrary::GetInstance().UnRegisterNotificationClient();
-            }
-            catch (...)
-            {
-
-            }
-        }
+      
     }
 }

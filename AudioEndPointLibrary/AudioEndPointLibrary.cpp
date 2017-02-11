@@ -14,24 +14,68 @@ namespace AudioEndPoint {
     {
         IMMDeviceEnumeratorPtr m_DeviceEnumerator;
         IMMNotificationClientPtr m_notif_client;
+
+        HRESULT RegisterNotificationClient();
+        HRESULT UnRegisterNotificationClient() const;
+        ~AudioEndPointLibraryImpl();
     };
 
+    HRESULT CAudioEndPointLibrary::AudioEndPointLibraryImpl::RegisterNotificationClient()
+    {
+        HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+        if (!m_DeviceEnumerator)
+        {
+            hr = m_DeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator));
+            ReturnIfFailed(hr);
+        }
 
+        if (!m_notif_client)
+        {
+            m_notif_client = new CMMNotificationClient;
+        }
+
+        hr = m_DeviceEnumerator->RegisterEndpointNotificationCallback(m_notif_client);
+        return hr;
+        
+    }
+
+    HRESULT CAudioEndPointLibrary::AudioEndPointLibraryImpl::UnRegisterNotificationClient() const
+    {
+        if (m_notif_client)
+        {
+            HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+            try
+            {
+                hr = m_DeviceEnumerator->UnregisterEndpointNotificationCallback(m_notif_client);
+            }
+            catch (...)
+            {
+            }
+            return hr;
+        }
+        return S_FALSE;
+    }
+
+    CAudioEndPointLibrary::AudioEndPointLibraryImpl::~AudioEndPointLibraryImpl()
+    {
+        UnRegisterNotificationClient();
+        m_DeviceEnumerator->Release();
+        m_notif_client->Release();
+    }
 
     // This is the constructor of a class that has been exported.
     // see AudioEndPointLibrary.h for the class definition
     CAudioEndPointLibrary::CAudioEndPointLibrary() : m_container(new AudioEndPointLibraryImpl()), 
         m_signals(new AudioEndPointLibrarySignals())
     {
-        this->RegisterNotificationClient();
+        m_container->RegisterNotificationClient();
     }
 
 
     CAudioEndPointLibrary::~CAudioEndPointLibrary()
     {
         delete m_signals;
-        this->UnRegisterNotificationClient();
-        //delete m_container;
+        delete m_container;
     }
 
     HRESULT CAudioEndPointLibrary::OnDeviceStateChanged(LPCWSTR pwstr_device_id, DWORD dw_new_state) const
@@ -131,33 +175,5 @@ namespace AudioEndPoint {
 
         return nullptr;
 
-    }
-
-    HRESULT CAudioEndPointLibrary::RegisterNotificationClient() const
-    {
-        HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-        if(!m_container->m_DeviceEnumerator)
-        {          
-            hr = m_container->m_DeviceEnumerator.CreateInstance(__uuidof(MMDeviceEnumerator));
-            ReturnIfFailed(hr);
-        }
-
-        if (!m_container->m_notif_client) {
-            m_container->m_notif_client = new CMMNotificationClient;            
-            hr = m_container->m_DeviceEnumerator->RegisterEndpointNotificationCallback(m_container->m_notif_client);
-            return hr;
-        }
-        return S_OK;
-    }
-
-    HRESULT CAudioEndPointLibrary::UnRegisterNotificationClient() const
-    {
-        if (m_container->m_notif_client) {
-            m_container->m_notif_client->Release();
-            HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-            hr = m_container->m_DeviceEnumerator->UnregisterEndpointNotificationCallback(m_container->m_notif_client);
-            return hr;
-        }
-        return S_FALSE;
     }
 }
