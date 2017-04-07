@@ -28,7 +28,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{115BF2B4-B3BE-446D-BA76-348E274258F7}</ProjectGuid>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>AudioEndPointControllerWrapper</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
@@ -58,7 +58,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
