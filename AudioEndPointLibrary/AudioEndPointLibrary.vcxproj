@@ -30,7 +30,7 @@
     <ProjectGuid>{521ED36D-A11A-4033-BF96-3C066FE74032}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>AudioEndPointLibrary</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <ProjectName>AudioEndPointLibrary</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
