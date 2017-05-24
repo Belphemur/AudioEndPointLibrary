@@ -28,6 +28,7 @@
 *.app
 
 # Visual Studio
+.vs/
 Debug
 Release
 x64
