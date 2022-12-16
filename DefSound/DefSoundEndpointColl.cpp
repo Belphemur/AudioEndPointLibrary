@@ -163,7 +163,7 @@ void EnumerateEndpoints(
         }
         catch (CError)
         {
-            DeviceClassIconPath.Get().pwszVal = L"%windir%\system32\mmres.dll,-3010";
+            DeviceClassIconPath.Get().pwszVal = L"%windir%\\system32\\mmres.dll,-3010";
         }
         
 
